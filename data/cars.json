@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Toyota Yaris",
+    "brand": "Toyota",
+    "type": "รถเก๋ง",
+    "pricePerDay": 900,
+    "seats": 5,
+    "transmission": "ออโต้",
+    "fuel": "เบนซิน",
+    "image": "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=900&q=80",
+    "available": true
+  },
+  {
+    "id": 2,
+    "name": "Honda Civic",
+    "brand": "Honda",
+    "type": "รถเก๋ง",
+    "pricePerDay": 1400,
+    "seats": 5,
+    "transmission": "ออโต้",
+    "fuel": "เบนซิน",
+    "image": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=80",
+    "available": true
+  },
+  {
+    "id": 3,
+    "name": "Toyota Fortuner",
+    "brand": "Toyota",
+    "type": "SUV",
+    "pricePerDay": 2200,
+    "seats": 7,
+    "transmission": "ออโต้",
+    "fuel": "ดีเซล",
+    "image": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80",
+    "available": true
+  },
+  {
+    "id": 4,
+    "name": "Isuzu D-Max",
+    "brand": "Isuzu",
+    "type": "กระบะ",
+    "pricePerDay": 1300,
+    "seats": 5,
+    "transmission": "ธรรมดา",
+    "fuel": "ดีเซล",
+    "image": "https://images.unsplash.com/photo-1605893477799-b99e3b8b93fe?auto=format&fit=crop&w=900&q=80",
+    "available": true
+  }
+]
