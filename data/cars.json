@@ -1,17 +1,5 @@
 [
   {
-    "id": 1,
-    "name": "Toyota Yaris",
-    "brand": "Toyota",
-    "type": "รถเก๋ง",
-    "pricePerDay": 900,
-    "seats": 5,
-    "transmission": "ออโต้",
-    "fuel": "เบนซิน",
-    "image": "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=900&q=80",
-    "available": true
-  },
-  {
     "id": 2,
     "name": "Honda Civic",
     "brand": "Honda",
