@@ -1,67 +1,142 @@
-import "server-only";
+"use server";
+
+import { cookies } from "next/headers";
+import crypto from "crypto";
 import fs from "fs/promises";
 import path from "path";
-import crypto from "crypto";
-import { cookies } from "next/headers";
 
-export type UserRole = "admin" | "user";
-export type User = { id:number; name:string; email:string; passwordHash:string; role:UserRole };
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  passwordHash: string;
+  role: "admin" | "user";
+};
 
-const filePath = path.join(process.cwd(), "data/users.json");
-const COOKIE = "car_rental_session";
-const SECRET = process.env.AUTH_SECRET || "car-rental-demo-secret";
+const USERS_FILE = path.join(process.cwd(), "data", "users.json");
 
 async function readUsers(): Promise<User[]> {
-  return JSON.parse(await fs.readFile(filePath, "utf8"));
-}
-async function writeUsers(users: User[]) {
-  await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf8");
-}
-export function hashPassword(password:string) {
-  return crypto.createHash("sha256").update(password).digest("hex");
-}
-function sign(value:string) {
-  return crypto.createHmac("sha256", SECRET).update(value).digest("hex");
-}
-function createToken(user:User) {
-  const value = `${user.id}|${user.email}|${user.role}`;
-  return `${Buffer.from(value).toString("base64url")}.${sign(value)}`;
-}
-async function getTokenUser(token:string|undefined) {
-  if (!token) return null;
-  const [encoded, signature] = token.split(".");
-  if (!encoded || !signature) return null;
   try {
-    const value = Buffer.from(encoded, "base64url").toString("utf8");
-    if (sign(value) !== signature) return null;
-    const [id, email, role] = value.split("|");
-    const users = await readUsers();
-    return users.find(u => u.id === Number(id) && u.email === email && u.role === role) ?? null;
-  } catch { return null; }
+    const text = await fs.readFile(USERS_FILE, "utf8");
+    return JSON.parse(text);
+  } catch {
+    return [];
+  }
 }
-export async function getCurrentUser() {
-  const store = await cookies();
-  return getTokenUser(store.get(COOKIE)?.value);
+
+async function writeUsers(users: User[]) {
+  await fs.writeFile(
+    USERS_FILE,
+    JSON.stringify(users, null, 2),
+    "utf8"
+  );
 }
-export async function loginUser(email:string,password:string) {
+
+function hashPassword(password: string) {
+  return crypto
+    .createHash("sha256")
+    .update(password)
+    .digest("hex");
+}
+
+export async function loginUser(
+  email: string,
+  password: string
+) {
   const users = await readUsers();
-  const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.passwordHash === hashPassword(password));
-  if (!user) return false;
-  const store = await cookies();
-  store.set(COOKIE, createToken(user), { httpOnly:true, sameSite:"lax", secure:process.env.NODE_ENV==="production", path:"/", maxAge:60*60*24*7 });
+
+  const passwordHash = hashPassword(password);
+
+  const user = users.find(
+    (u) =>
+      u.email.toLowerCase() === email.toLowerCase() &&
+      u.passwordHash === passwordHash
+  );
+
+  if (!user) {
+    return false;
+  }
+
+  const cookieStore = await cookies();
+
+  cookieStore.set(
+    "car_rental_user",
+    JSON.stringify({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    }),
+    {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+    }
+  );
+
   return true;
 }
-export async function logoutUser() {
-  const store = await cookies();
-  store.delete(COOKIE);
-}
-export async function registerUser(name:string,email:string,password:string) {
+
+export async function registerUser(
+  name: string,
+  email: string,
+  password: string
+) {
   const users = await readUsers();
-  if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) return { ok:false, message:"อีเมลนี้มีสมาชิกแล้ว" };
-  const user:User = { id: Date.now(), name, email:email.toLowerCase(), passwordHash:hashPassword(password), role:"user" };
-  users.push(user);
+
+  const exists = users.some(
+    (u) => u.email.toLowerCase() === email.toLowerCase()
+  );
+
+  if (exists) {
+    return {
+      ok: false,
+      message: "อีเมลนี้มีผู้ใช้งานแล้ว",
+    };
+  }
+
+  const newUser: User = {
+    id: Date.now(),
+    name,
+    email,
+    passwordHash: hashPassword(password),
+    role: "user",
+  };
+
+  users.push(newUser);
+
   await writeUsers(users);
-  const store = await cookies();
-  store.set(COOKIE, createToken(user), { httpOnly:true, sameSite:"lax", secure:process.env.NODE_ENV==="production", path:"/", maxAge:60*60*24*7 });
-  return { ok:true, message:"สมัครสมาชิกสำเร็จ" };
+
+  return {
+    ok: true,
+    message: "สมัครสมาชิกสำเร็จ",
+  };
+}
+
+export async function logoutUser() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete("car_rental_user");
+}
+
+export async function getCurrentUser() {
+  const cookieStore = await cookies();
+
+  const cookie = cookieStore.get("car_rental_user");
+
+  if (!cookie?.value) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(cookie.value) as {
+      id: number;
+      name: string;
+      email: string;
+      role: "admin" | "user";
+    };
+  } catch {
+    return null;
+  }
 }
