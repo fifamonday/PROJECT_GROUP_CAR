@@ -1,15 +1,21 @@
 "use server";
 
 import { getCurrentUser } from "@/app/lib/auth";
+
 import {
   createBooking,
   updateBookingStatus,
 } from "@/app/lib/bookings";
+
 import { getCars } from "@/app/lib/cars";
+
 import { redirect } from "next/navigation";
+
 import { revalidatePath } from "next/cache";
 
-export async function createBookingAction(fd: FormData) {
+export async function createBookingAction(
+  fd: FormData
+) {
   const user = await getCurrentUser();
 
   if (!user) {
@@ -21,8 +27,14 @@ export async function createBookingAction(fd: FormData) {
   }
 
   const carId = Number(fd.get("carId"));
-  const start = String(fd.get("startDate") || "");
-  const end = String(fd.get("endDate") || "");
+
+  const start = String(
+    fd.get("startDate") || ""
+  );
+
+  const end = String(
+    fd.get("endDate") || ""
+  );
 
   if (!carId || !start || !end) {
     redirect(
@@ -35,11 +47,10 @@ export async function createBookingAction(fd: FormData) {
   const startDate = new Date(start);
   const endDate = new Date(end);
 
-  // ตรวจสอบว่าวันคืนรถต้องไม่ก่อนวันรับรถ
-  if (endDate < startDate) {
+  if (endDate <= startDate) {
     redirect(
       `/rent/${carId}?error=${encodeURIComponent(
-        "ไม่ควรคืนรถก่อนวันรับรถ"
+        "ต้องเลือกวันคืนรถหลังวันรับรถ"
       )}`
     );
   }
@@ -69,12 +80,22 @@ export async function createBookingAction(fd: FormData) {
 
   await createBooking({
     carId: car.id,
+
     userId: user.id,
+
     userName: user.name,
+
+    // สำคัญ: บันทึก Email ของ Google คนที่จอง
+    userEmail: user.email,
+
     carName: car.name,
+
     startDate: start,
+
     endDate: end,
+
     days,
+
     total: days * car.pricePerDay,
   });
 
@@ -96,5 +117,6 @@ export async function updateBookingStatusAction(
   await updateBookingStatus(id, status);
 
   revalidatePath("/admin/bookings");
+
   revalidatePath("/account");
 }

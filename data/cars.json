@@ -1,6 +1,5 @@
 [
   {
-    "id": 2,
     "name": "Honda Civic",
     "brand": "Honda",
     "type": "รถเก๋ง",
@@ -9,7 +8,8 @@
     "transmission": "ออโต้",
     "fuel": "เบนซิน",
     "image": "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=80",
-    "available": true
+    "available": false,
+    "id": 2
   },
   {
     "id": 3,
@@ -24,39 +24,27 @@
     "available": true
   },
   {
-    "id": 4,
-    "name": "Isuzu D-Max",
-    "brand": "Isuzu",
-    "type": "กระบะ",
-    "pricePerDay": 1300,
-    "seats": 5,
-    "transmission": "ธรรมดา",
-    "fuel": "ดีเซล",
-    "image": "https://images.unsplash.com/photo-1605893477799-b99e3b8b93fe?auto=format&fit=crop&w=900&q=80",
-    "available": true
-  },
-  {
-    "name": "GI",
-    "brand": "wdwer",
-    "type": "กระบะ",
-    "pricePerDay": 434324,
-    "seats": 5,
-    "transmission": "ออโต้",
-    "fuel": "เบนซิน",
-    "image": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80",
-    "available": true,
-    "id": 1791301480180
-  },
-  {
-    "name": "3213",
-    "brand": "32132131",
+    "name": "ภภ",
+    "brand": "-/ภ-/",
     "type": "SUV",
-    "pricePerDay": 3213213,
+    "pricePerDay": 2,
     "seats": 5,
     "transmission": "ออโต้",
     "fuel": "เบนซิน",
     "image": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80",
+    "available": false,
+    "id": 1791305489581
+  },
+  {
+    "name": "CIVIC",
+    "brand": "Toyota",
+    "type": "รถเก๋ง",
+    "pricePerDay": 2000,
+    "seats": 4,
+    "transmission": "ออโต้",
+    "fuel": "เบนซิน",
+    "image": "https://s.isanook.com/au/0/ud/16/84364/civic_ehev_08.jpg?ip/crop/w1200h700/q80/webp",
     "available": true,
-    "id": 1791301494585
+    "id": 1791306313264
   }
 ]

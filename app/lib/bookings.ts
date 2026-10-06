@@ -12,14 +12,25 @@ const filePath = path.join(
 
 export const BookingSchema = z.object({
   id: z.number(),
+
   carId: z.number(),
+
   userId: z.number(),
+
   userName: z.string(),
+
+  userEmail: z.string().optional(),
+
   carName: z.string(),
+
   startDate: z.string(),
+
   endDate: z.string(),
+
   days: z.number(),
+
   total: z.number(),
+
   status: z.enum([
     "รอยืนยัน",
     "ยืนยันแล้ว",
@@ -27,9 +38,7 @@ export const BookingSchema = z.object({
   ]),
 });
 
-export type Booking = z.infer<
-  typeof BookingSchema
->;
+export type Booking = z.infer<typeof BookingSchema>;
 
 export async function getBookings(): Promise<Booking[]> {
   const text = await fs.readFile(
@@ -55,7 +64,9 @@ export async function createBooking(
 
   const item: Booking = {
     ...data,
+
     id: Date.now(),
+
     status: "รอยืนยัน",
   };
 
@@ -66,15 +77,25 @@ export async function createBooking(
   return item;
 }
 
+/* =========================
+   GET USER BOOKINGS
+========================= */
+
 export async function getUserBookings(
-  userId: number
+  userEmail: string
 ) {
   const items = await getBookings();
 
   return items.filter(
-    (booking) => booking.userId === userId
+    (booking) =>
+      booking.userEmail?.toLowerCase() ===
+      userEmail.toLowerCase()
   );
 }
+
+/* =========================
+   UPDATE BOOKING STATUS
+========================= */
 
 export async function updateBookingStatus(
   id: number,
