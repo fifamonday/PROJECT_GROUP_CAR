@@ -6,8 +6,12 @@ export default function GoogleLoginButton() {
   return (
     <button
       type="button"
-      className="primary-button"
-      onClick={() => signIn("google", { callbackUrl: "/" })}
+      className="nav-button"
+      onClick={() =>
+        signIn("google", {
+          callbackUrl: "/",
+        })
+      }
     >
       เข้าสู่ระบบด้วย Google
     </button>

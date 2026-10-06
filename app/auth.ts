@@ -1,3 +1,9 @@
+console.log("GOOGLE CLIENT ID =", process.env.AUTH_GOOGLE_ID);
+console.log(
+  "GOOGLE SECRET EXISTS =",
+  Boolean(process.env.AUTH_GOOGLE_SECRET)
+);
+
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
@@ -6,8 +12,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
   providers: [
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
     }),
   ],
 

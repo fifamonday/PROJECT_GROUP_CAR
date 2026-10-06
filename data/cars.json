@@ -46,5 +46,29 @@
     "fuel": "ดีเซล",
     "image": "https://images.unsplash.com/photo-1605893477799-b99e3b8b93fe?auto=format&fit=crop&w=900&q=80",
     "available": true
+  },
+  {
+    "name": "GI",
+    "brand": "wdwer",
+    "type": "กระบะ",
+    "pricePerDay": 434324,
+    "seats": 5,
+    "transmission": "ออโต้",
+    "fuel": "เบนซิน",
+    "image": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80",
+    "available": true,
+    "id": 1791301480180
+  },
+  {
+    "name": "3213",
+    "brand": "32132131",
+    "type": "SUV",
+    "pricePerDay": 3213213,
+    "seats": 5,
+    "transmission": "ออโต้",
+    "fuel": "เบนซิน",
+    "image": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80",
+    "available": true,
+    "id": 1791301494585
   }
 ]

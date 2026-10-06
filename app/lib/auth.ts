@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@/app/auth";
 import { cookies } from "next/headers";
 import crypto from "crypto";
 import fs from "fs/promises";
@@ -13,16 +14,32 @@ type User = {
   role: "admin" | "user";
 };
 
-const USERS_FILE = path.join(process.cwd(), "data", "users.json");
+const USERS_FILE = path.join(
+  process.cwd(),
+  "data",
+  "users.json"
+);
+
+/* =========================
+   อ่าน users.json
+========================= */
 
 async function readUsers(): Promise<User[]> {
   try {
-    const text = await fs.readFile(USERS_FILE, "utf8");
+    const text = await fs.readFile(
+      USERS_FILE,
+      "utf8"
+    );
+
     return JSON.parse(text);
   } catch {
     return [];
   }
 }
+
+/* =========================
+   เขียน users.json
+========================= */
 
 async function writeUsers(users: User[]) {
   await fs.writeFile(
@@ -32,12 +49,20 @@ async function writeUsers(users: User[]) {
   );
 }
 
+/* =========================
+   เข้ารหัส Password
+========================= */
+
 function hashPassword(password: string) {
   return crypto
     .createHash("sha256")
     .update(password)
     .digest("hex");
 }
+
+/* =========================
+   Login แบบเดิม
+========================= */
 
 export async function loginUser(
   email: string,
@@ -49,7 +74,8 @@ export async function loginUser(
 
   const user = users.find(
     (u) =>
-      u.email.toLowerCase() === email.toLowerCase() &&
+      u.email.toLowerCase() ===
+        email.toLowerCase() &&
       u.passwordHash === passwordHash
   );
 
@@ -70,13 +96,18 @@ export async function loginUser(
     {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure:
+        process.env.NODE_ENV === "production",
       path: "/",
     }
   );
 
   return true;
 }
+
+/* =========================
+   สมัครสมาชิกแบบเดิม
+========================= */
 
 export async function registerUser(
   name: string,
@@ -86,7 +117,9 @@ export async function registerUser(
   const users = await readUsers();
 
   const exists = users.some(
-    (u) => u.email.toLowerCase() === email.toLowerCase()
+    (u) =>
+      u.email.toLowerCase() ===
+      email.toLowerCase()
   );
 
   if (exists) {
@@ -114,16 +147,53 @@ export async function registerUser(
   };
 }
 
+/* =========================
+   Logout แบบ Cookie เดิม
+========================= */
+
 export async function logoutUser() {
   const cookieStore = await cookies();
 
   cookieStore.delete("car_rental_user");
 }
 
+/* =========================
+   ดึง User ปัจจุบัน
+========================= */
+
 export async function getCurrentUser() {
+  const session = await auth();
+
+  /* =========================
+     Google Login
+  ========================= */
+
+  if (session?.user?.email) {
+    const email = session.user.email;
+
+    const role =
+      email.toLowerCase() ===
+      "fifanattapol2549@gmail.com"
+        ? "admin"
+        : "user";
+
+    return {
+      id: 0,
+      name: session.user.name ?? email,
+      email: email,
+      role: role as "admin" | "user",
+    };
+  }
+
+  /* =========================
+     Cookie Login แบบเดิม
+  ========================= */
+
   const cookieStore = await cookies();
 
-  const cookie = cookieStore.get("car_rental_user");
+  const cookie = cookieStore.get(
+    "car_rental_user"
+  );
 
   if (!cookie?.value) {
     return null;
