@@ -12,30 +12,6 @@
     "id": 2
   },
   {
-    "id": 3,
-    "name": "Toyota Fortuner",
-    "brand": "Toyota",
-    "type": "SUV",
-    "pricePerDay": 2200,
-    "seats": 7,
-    "transmission": "ออโต้",
-    "fuel": "ดีเซล",
-    "image": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80",
-    "available": true
-  },
-  {
-    "name": "ภภ",
-    "brand": "-/ภ-/",
-    "type": "SUV",
-    "pricePerDay": 2,
-    "seats": 5,
-    "transmission": "ออโต้",
-    "fuel": "เบนซิน",
-    "image": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80",
-    "available": false,
-    "id": 1791305489581
-  },
-  {
     "name": "CIVIC",
     "brand": "Toyota",
     "type": "รถเก๋ง",
@@ -46,5 +22,17 @@
     "image": "https://s.isanook.com/au/0/ud/16/84364/civic_ehev_08.jpg?ip/crop/w1200h700/q80/webp",
     "available": true,
     "id": 1791306313264
+  },
+  {
+    "name": "ๅ",
+    "brand": "/",
+    "type": "SUV",
+    "pricePerDay": 20000,
+    "seats": 5,
+    "transmission": "ออโต้",
+    "fuel": "เบนซิน",
+    "image": "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80",
+    "available": true,
+    "id": 1791309441996
   }
 ]
