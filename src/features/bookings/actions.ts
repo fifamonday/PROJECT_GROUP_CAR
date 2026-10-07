@@ -10,14 +10,20 @@ import {
 
 import { getCars } from "@/features/cars/service";
 
-import { redirect } from "next/navigation";
-
 import { revalidatePath } from "next/cache";
 
+import { redirect } from "next/navigation";
+
+
+/* =========================================================
+   CREATE BOOKING
+========================================================= */
+
 export async function createBookingAction(
-  fd: FormData
+  formData: FormData
 ) {
-  const user = await getCurrentUser();
+  const user =
+    await getCurrentUser();
 
   if (!user) {
     redirect(
@@ -27,57 +33,98 @@ export async function createBookingAction(
     );
   }
 
-  const carId = Number(fd.get("carId"));
 
-  const start = String(
-    fd.get("startDate") || ""
+  const carId = Number(
+    formData.get("carId")
   );
 
-  const end = String(
-    fd.get("endDate") || ""
+  const startDate = String(
+    formData.get("startDate") ?? ""
   );
 
-  if (!carId || !start || !end) {
-    redirect(
-      `/rent/${carId}?error=${encodeURIComponent(
-        "ข้อมูลการเช่าไม่ครบ"
-      )}`
+  const endDate = String(
+    formData.get("endDate") ?? ""
+  );
+
+  const startTime = String(
+    formData.get("startTime") ?? ""
+  );
+
+  const endTime = String(
+    formData.get("endTime") ?? ""
+  );
+
+
+  if (
+    !Number.isInteger(carId) ||
+    carId <= 0 ||
+    !startDate ||
+    !endDate ||
+    !startTime ||
+    !endTime
+  ) {
+    throw new Error(
+      "ข้อมูลการเช่าไม่ครบ"
     );
   }
 
-  const startDate = new Date(start);
-  const endDate = new Date(end);
 
-  if (endDate <= startDate) {
-    redirect(
-      `/rent/${carId}?error=${encodeURIComponent(
-        "ต้องเลือกวันคืนรถหลังวันรับรถ"
-      )}`
+  const start =
+    new Date(startDate);
+
+  const end =
+    new Date(endDate);
+
+
+  if (
+    !Number.isFinite(
+      start.getTime()
+    ) ||
+    !Number.isFinite(
+      end.getTime()
+    ) ||
+    end <= start
+  ) {
+    throw new Error(
+      "ต้องเลือกวันคืนรถหลังวันรับรถ"
     );
   }
+
 
   const days = Math.ceil(
-    (endDate.getTime() - startDate.getTime()) /
+    (end.getTime() -
+      start.getTime()) /
       (1000 * 60 * 60 * 24)
   );
 
-  if (!Number.isFinite(days) || days < 1) {
-    redirect(
-      `/rent/${carId}?error=${encodeURIComponent(
-        "วันที่เช่าไม่ถูกต้อง"
-      )}`
+
+  if (
+    !Number.isFinite(days) ||
+    days < 1
+  ) {
+    throw new Error(
+      "วันที่เช่าไม่ถูกต้อง"
     );
   }
 
-  const cars = await getCars();
 
-  const car = cars.find(
-    (item) => item.id === carId
-  );
+  const cars =
+    await getCars();
+
+
+  const car =
+    cars.find(
+      (item) =>
+        item.id === carId
+    );
+
 
   if (!car) {
-    redirect("/");
+    throw new Error(
+      "ไม่พบรถที่ต้องการเช่า"
+    );
   }
+
 
   await createBooking({
     carId: car.id,
@@ -90,39 +137,59 @@ export async function createBookingAction(
 
     carName: car.name,
 
-    licensePlate: car.licensePlate,
+    licensePlate:
+      car.licensePlate,
 
-    startDate: start,
+    startDate,
 
-    endDate: end,
+    endDate,
 
     days,
 
-    total: days * car.pricePerDay,
+    total:
+      days *
+      car.pricePerDay,
   });
 
-  revalidatePath("/account");
 
-  redirect("/account");
+  revalidatePath(
+    "/account"
+  );
+
+  revalidatePath(
+    "/admin/bookings"
+  );
+
+  // ไม่ redirect
+  // เพื่อให้ BookingModal
+  // แสดง Success Popup
 }
 
-/* =========================
-   EDIT BOOKING
-========================= */
+
+/* =========================================================
+   UPDATE BOOKING
+========================================================= */
 
 export async function updateBookingAction(
   id: number,
-  fd: FormData
+  formData: FormData
 ) {
-  const user = await getCurrentUser();
+  const user =
+    await getCurrentUser();
 
-  if (user?.role !== "admin") {
+
+  if (
+    !user ||
+    user.role !== "admin"
+  ) {
     redirect("/");
   }
 
+
   const endDate = String(
-    fd.get("endDate") || ""
+    formData.get("endDate") ?? ""
   );
+
 
   if (!endDate) {
     throw new Error(
@@ -130,38 +197,61 @@ export async function updateBookingAction(
     );
   }
 
+
   await updateBooking(
     id,
     endDate
   );
 
-  revalidatePath("/admin/bookings");
 
-  revalidatePath("/account");
+  revalidatePath(
+    "/admin/bookings"
+  );
 
-  redirect("/admin/bookings");
+  revalidatePath(
+    "/account"
+  );
+
+
+  redirect(
+    "/admin/bookings"
+  );
 }
 
-/* =========================
-   UPDATE STATUS
-========================= */
+
+/* =========================================================
+   UPDATE BOOKING STATUS
+========================================================= */
 
 export async function updateBookingStatusAction(
   id: number,
-  status: "ยืนยันแล้ว" | "ยกเลิก"
+  status:
+    | "ยืนยันแล้ว"
+    | "ยกเลิก"
 ) {
-  const user = await getCurrentUser();
+  const user =
+    await getCurrentUser();
 
-  if (user?.role !== "admin") {
+
+  if (
+    !user ||
+    user.role !== "admin"
+  ) {
     redirect("/");
   }
+
 
   await updateBookingStatus(
     id,
     status
   );
 
-  revalidatePath("/admin/bookings");
 
-  revalidatePath("/account");
+  revalidatePath(
+    "/admin/bookings"
+  );
+
+  revalidatePath(
+    "/account"
+  );
 }

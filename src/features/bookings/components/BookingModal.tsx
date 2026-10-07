@@ -19,13 +19,23 @@ export default function BookingModal({
     useState("");
 
   const [startTime, setStartTime] =
-    useState("09:00");
+    useState("");
 
   const [endDate, setEndDate] =
     useState("");
 
   const [endTime, setEndTime] =
-    useState("18:00");
+    useState("");
+
+  const [submitted, setSubmitted] =
+    useState(false);
+
+  const [loading, setLoading] =
+    useState(false);
+
+  const today = new Date()
+    .toISOString()
+    .split("T")[0];
 
   const days = useMemo(() => {
     if (!startDate || !endDate) {
@@ -36,7 +46,8 @@ export default function BookingModal({
     const end = new Date(endDate);
 
     const difference =
-      end.getTime() - start.getTime();
+      end.getTime() -
+      start.getTime();
 
     const result = Math.ceil(
       difference /
@@ -49,9 +60,177 @@ export default function BookingModal({
   const total =
     days * car.pricePerDay;
 
-  const today = new Date()
-    .toISOString()
-    .split("T")[0];
+  function handleStartDateChange(
+    value: string
+  ) {
+    setStartDate(value);
+
+    // เมื่อเปลี่ยนวันรับรถ
+    // ให้ล้างวันคืนรถเดิม
+    setEndDate("");
+
+    // และล้างเวลาคืนรถ
+    setEndTime("");
+  }
+
+  function handleStartTimeChange(
+    value: string
+  ) {
+    setStartTime(value);
+
+    // เมื่อเปลี่ยนเวลารับรถ
+    // ให้เลือกเวลาคืนรถใหม่อีกครั้ง
+    setEndTime("");
+  }
+
+  async function handleSubmit(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
+
+    if (!startDate) {
+      alert("กรุณาเลือกวันรับรถก่อน");
+      return;
+    }
+
+    if (!startTime) {
+      alert("กรุณาเลือกเวลารับรถก่อน");
+      return;
+    }
+
+    if (!endDate) {
+      alert("กรุณาเลือกวันคืนรถ");
+      return;
+    }
+
+    if (!endTime) {
+      alert("กรุณาเลือกเวลาคืนรถ");
+      return;
+    }
+
+    if (endDate < startDate) {
+      alert(
+        "วันคืนรถต้องไม่ก่อนวันรับรถ"
+      );
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const formData =
+        new FormData(event.currentTarget);
+
+      await createBookingAction(formData);
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "ไม่สามารถทำรายการเช่าได้ กรุณาลองใหม่อีกครั้ง"
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (submitted) {
+    return (
+      <div className="booking-modal-overlay">
+        <div className="booking-success-modal">
+          <div className="success-icon">
+            ✓
+          </div>
+
+          <span className="success-eyebrow">
+            BOOKING SUBMITTED
+          </span>
+
+          <h2>
+            ส่งคำขอเช่าเรียบร้อย
+          </h2>
+
+          <p>
+            ระบบได้รับคำขอเช่ารถของคุณแล้ว
+          </p>
+
+          <div className="success-status">
+            <span className="success-status-dot" />
+
+            <div>
+              <strong>
+                รอยืนยันจากทางระบบ
+              </strong>
+
+              <small>
+                กรุณารอเจ้าหน้าที่ตรวจสอบ
+                และยืนยันการเช่า
+              </small>
+            </div>
+          </div>
+
+          <div className="success-booking-info">
+            <div>
+              <span>รถ</span>
+              <strong>{car.name}</strong>
+            </div>
+
+            <div>
+              <span>ทะเบียน</span>
+              <strong>
+                {car.licensePlate || "-"}
+              </strong>
+            </div>
+
+            <div>
+              <span>วันที่เช่า</span>
+              <strong>{startDate}</strong>
+            </div>
+
+            <div>
+              <span>วันที่คืน</span>
+              <strong>{endDate}</strong>
+            </div>
+
+            <div>
+              <span>เวลารับรถ</span>
+              <strong>{startTime}</strong>
+            </div>
+
+            <div>
+              <span>เวลาคืนรถ</span>
+              <strong>{endTime}</strong>
+            </div>
+
+            <div>
+              <span>จำนวนวัน</span>
+              <strong>
+                {days} วัน
+              </strong>
+            </div>
+
+            <div>
+              <span>ยอดรวม</span>
+              <strong className="success-total">
+                ฿{total.toLocaleString()}
+              </strong>
+            </div>
+          </div>
+
+          <div className="success-actions">
+            <button
+              type="button"
+              className="primary-button"
+              onClick={onClose}
+            >
+              กลับหน้ารายการรถ
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -70,15 +249,18 @@ export default function BookingModal({
               CAR RENTAL
             </span>
 
-            <h2>
-              ยืนยันการเช่ารถ
-            </h2>
+            <h2>จองรถ</h2>
+
+            <p>
+              กรุณาเลือกข้อมูลตามลำดับ
+            </p>
           </div>
 
           <button
             type="button"
             className="modal-close"
             onClick={onClose}
+            aria-label="ปิด"
           >
             ×
           </button>
@@ -90,11 +272,16 @@ export default function BookingModal({
             alt={car.name}
           />
 
-          <div>
+          <div className="booking-car-detail">
+            <span className="booking-car-type">
+              {car.type}
+            </span>
+
             <h3>{car.name}</h3>
 
             <p>
-              {car.brand} • {car.type}
+              {car.brand} • {car.seats} ที่นั่ง •{" "}
+              {car.transmission}
             </p>
 
             <p>
@@ -105,15 +292,14 @@ export default function BookingModal({
             </p>
 
             <strong className="booking-price">
-              ฿
-              {car.pricePerDay.toLocaleString()}
+              ฿{car.pricePerDay.toLocaleString()}
               <small> / วัน</small>
             </strong>
           </div>
         </div>
 
         <form
-          action={createBookingAction}
+          onSubmit={handleSubmit}
           className="booking-modal-form"
         >
           <input
@@ -122,91 +308,159 @@ export default function BookingModal({
             value={car.id}
           />
 
-          <div className="two-col">
-            <div>
-              <label htmlFor="startDate">
-                วันที่รับรถ
-              </label>
+          {/* =========================
+              01 DATE
+          ========================= */}
 
-              <input
-                id="startDate"
-                name="startDate"
-                type="date"
-                min={today}
-                value={startDate}
-                onChange={(e) =>
-                  setStartDate(
-                    e.target.value
-                  )
-                }
-                required
-              />
+          <div className="booking-section">
+            <div className="booking-section-title">
+              <span className="booking-section-number">
+                01
+              </span>
+
+              <div>
+                <h3>วันที่เช่ารถ</h3>
+
+                <p>
+                  ต้องเลือกวันรับรถก่อน
+                </p>
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="startTime">
-                เวลารับรถ
-              </label>
+            <div className="booking-fields">
+              <div className="booking-field">
+                <label htmlFor="startDate">
+                  วันรับรถ
+                </label>
 
-              <input
-                id="startTime"
-                name="startTime"
-                type="time"
-                value={startTime}
-                onChange={(e) =>
-                  setStartTime(
-                    e.target.value
-                  )
-                }
-                required
-              />
-            </div>
+                <input
+                  id="startDate"
+                  name="startDate"
+                  type="date"
+                  min={today}
+                  value={startDate}
+                  onChange={(e) =>
+                    handleStartDateChange(
+                      e.target.value
+                    )
+                  }
+                  required
+                />
+              </div>
 
-            <div>
-              <label htmlFor="endDate">
-                วันที่คืนรถ
-              </label>
+              <div className="booking-field">
+                <label htmlFor="endDate">
+                  วันคืนรถ
+                </label>
 
-              <input
-                id="endDate"
-                name="endDate"
-                type="date"
-                min={startDate || today}
-                value={endDate}
-                onChange={(e) =>
-                  setEndDate(
-                    e.target.value
-                  )
-                }
-                required
-              />
-            </div>
+                <input
+                  id="endDate"
+                  name="endDate"
+                  type="date"
+                  min={startDate || today}
+                  value={endDate}
+                  onChange={(e) =>
+                    setEndDate(
+                      e.target.value
+                    )
+                  }
+                  disabled={!startDate}
+                  required
+                />
 
-            <div>
-              <label htmlFor="endTime">
-                เวลาคืนรถ
-              </label>
-
-              <input
-                id="endTime"
-                name="endTime"
-                type="time"
-                value={endTime}
-                onChange={(e) =>
-                  setEndTime(
-                    e.target.value
-                  )
-                }
-                required
-              />
+                {!startDate && (
+                  <small className="field-hint">
+                    กรุณาเลือกวันรับรถก่อน
+                  </small>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="booking-summary">
-            <div>
-              <span>
-                จำนวนวัน
+          {/* =========================
+              02 TIME
+          ========================= */}
+
+          <div className="booking-section">
+            <div className="booking-section-title">
+              <span className="booking-section-number">
+                02
               </span>
+
+              <div>
+                <h3>เวลา</h3>
+
+                <p>
+                  ต้องเลือกเวลารับรถก่อน
+                </p>
+              </div>
+            </div>
+
+            <div className="booking-fields">
+              <div className="booking-field">
+                <label htmlFor="startTime">
+                  เวลารับรถ
+                </label>
+
+                <input
+                  id="startTime"
+                  name="startTime"
+                  type="time"
+                  value={startTime}
+                  onChange={(e) =>
+                    handleStartTimeChange(
+                      e.target.value
+                    )
+                  }
+                  disabled={!startDate}
+                  required
+                />
+
+                {!startDate && (
+                  <small className="field-hint">
+                    กรุณาเลือกวันรับรถก่อน
+                  </small>
+                )}
+              </div>
+
+              <div className="booking-field">
+                <label htmlFor="endTime">
+                  เวลาคืนรถ
+                </label>
+
+                <input
+                  id="endTime"
+                  name="endTime"
+                  type="time"
+                  value={endTime}
+                  onChange={(e) =>
+                    setEndTime(
+                      e.target.value
+                    )
+                  }
+                  disabled={
+                    !startDate ||
+                    !startTime
+                  }
+                  required
+                />
+
+                {!startTime && (
+                  <small className="field-hint">
+                    กรุณาเลือกเวลารับรถก่อน
+                  </small>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* =========================
+              SUMMARY
+          ========================= */}
+
+          <div className="booking-summary">
+            <div className="booking-summary-row">
+              <span>จำนวนวัน</span>
 
               <strong>
                 {days > 0
@@ -215,10 +469,8 @@ export default function BookingModal({
               </strong>
             </div>
 
-            <div>
-              <span>
-                ราคาต่อวัน
-              </span>
+            <div className="booking-summary-row">
+              <span>ราคา / วัน</span>
 
               <strong>
                 ฿
@@ -227,22 +479,24 @@ export default function BookingModal({
             </div>
 
             <div className="booking-total">
-              <span>
-                รวมทั้งหมด
-              </span>
+              <span>ยอดรวม</span>
 
               <strong>
-                ฿
-                {total.toLocaleString()}
+                ฿{total.toLocaleString()}
               </strong>
             </div>
           </div>
+
+          {/* =========================
+              ACTIONS
+          ========================= */}
 
           <div className="booking-modal-actions">
             <button
               type="button"
               className="secondary-button"
               onClick={onClose}
+              disabled={loading}
             >
               ยกเลิก
             </button>
@@ -251,6 +505,7 @@ export default function BookingModal({
               type="submit"
               className="primary-button"
               disabled={
+                loading ||
                 !startDate ||
                 !startTime ||
                 !endDate ||
@@ -258,7 +513,9 @@ export default function BookingModal({
                 days < 1
               }
             >
-              ยืนยันการเช่า
+              {loading
+                ? "กำลังส่งคำขอ..."
+                : "ยืนยันการเช่า"}
             </button>
           </div>
         </form>

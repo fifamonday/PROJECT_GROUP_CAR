@@ -1,17 +1,29 @@
 import Link from "next/link";
-import { updateBookingAction } from "@/features/bookings/actions";
+
+import {
+  updateBookingAction,
+} from "@/features/bookings/actions";
 
 type BookingEditProps = {
   booking: {
     id: number;
+
     userName: string;
+
     userEmail?: string;
+
     carName: string;
+
     licensePlate: string;
+
     startDate: string;
+
     endDate: string;
+
     days: number;
+
     total: number;
+
     status:
       | "รอยืนยัน"
       | "ยืนยันแล้ว"
@@ -30,70 +42,94 @@ export default function BookingEdit({
       )}
       className="admin-form"
     >
+
+      {/* ลูกค้า */}
+
       <div>
-        <label>
+        <label htmlFor="userName">
           ลูกค้า
         </label>
 
         <input
+          id="userName"
           type="text"
           value={booking.userName}
-          disabled
+          readOnly
         />
       </div>
 
+
+      {/* อีเมล */}
+
       <div>
-        <label>
+        <label htmlFor="userEmail">
           อีเมล
         </label>
 
         <input
+          id="userEmail"
           type="text"
           value={
             booking.userEmail || "-"
           }
-          disabled
+          readOnly
         />
       </div>
 
+
+      {/* รถ */}
+
       <div className="two-col">
+
         <div>
-          <label>
+          <label htmlFor="carName">
             รถ
           </label>
 
           <input
+            id="carName"
             type="text"
             value={booking.carName}
-            disabled
+            readOnly
           />
         </div>
 
+
         <div>
-          <label>
+          <label htmlFor="licensePlate">
             ทะเบียนรถ
           </label>
 
           <input
+            id="licensePlate"
             type="text"
-            value={booking.licensePlate || "-"}
-            disabled
+            value={
+              booking.licensePlate || "-"
+            }
+            readOnly
           />
         </div>
+
       </div>
 
+
+      {/* วันที่ */}
+
       <div className="two-col">
+
         <div>
-          <label>
+          <label htmlFor="startDate">
             วันที่รับรถ
           </label>
 
           <input
+            id="startDate"
             type="date"
             value={booking.startDate}
-            disabled
+            readOnly
           />
         </div>
+
 
         <div>
           <label htmlFor="endDate">
@@ -104,14 +140,21 @@ export default function BookingEdit({
             id="endDate"
             name="endDate"
             type="date"
-            defaultValue={booking.endDate}
+            defaultValue={
+              booking.endDate
+            }
             min={booking.startDate}
             required
           />
         </div>
+
       </div>
 
+
+      {/* ข้อมูลการเช่า */}
+
       <div className="panel">
+
         <p>
           จำนวนวันเดิม:{" "}
           <strong>
@@ -122,17 +165,31 @@ export default function BookingEdit({
         <p>
           ยอดเงินเดิม:{" "}
           <strong>
-            ฿{booking.total.toLocaleString()}
+            ฿
+            {booking.total.toLocaleString()}
+          </strong>
+        </p>
+
+        <p>
+          สถานะ:{" "}
+          <strong>
+            {booking.status}
           </strong>
         </p>
 
         <p className="muted">
           หากลูกค้าคืนรถก่อนกำหนด
-          ให้เปลี่ยนวันที่คืนรถเป็นวันที่คืนจริง
+          ให้เปลี่ยนวันที่คืนรถ
+          เป็นวันที่คืนจริง
         </p>
+
       </div>
 
+
+      {/* BUTTONS */}
+
       <div className="admin-actions">
+
         <button
           type="submit"
           className="primary-button"
@@ -146,7 +203,9 @@ export default function BookingEdit({
         >
           ยกเลิก
         </Link>
+
       </div>
+
     </form>
   );
 }
