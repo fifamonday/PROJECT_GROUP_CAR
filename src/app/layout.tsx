@@ -1,11 +1,11 @@
 import "./globals.css";
-import Link from "next/link";
+
 import { getCurrentUser } from "@/features/auth/service";
 import { logoutAction } from "@/features/auth/actions";
-import GoogleLoginButton from "@/features/auth/components/GoogleLoginButton";
+import SiteHeader from "@/features/auth/components/SiteHeader";
 
 export const metadata = {
-  title: "Car Rent 324",
+  title: "LANLODE.CNX",
   description: "ระบบเช่ารถออนไลน์",
 };
 
@@ -19,65 +19,20 @@ export default async function RootLayout({
   return (
     <html lang="th">
       <body>
-        <header className="navbar">
-          <Link href="/" className="brand">
-            Car Rent 324
-          </Link>
 
-          <nav>
-            <Link href="/">
-              รถเช่า
-            </Link>
+        <SiteHeader
+          user={user}
+          logoutAction={logoutAction}
+        />
 
-            {user && user.role !== "admin" && (
-              <Link href="/account">
-                รายการเช่า
-              </Link>
-            )}
-
-            {user?.role === "admin" && (
-              <>
-                <Link href="/admin/bookings">
-                  ดูรายการจอง
-                </Link>
-
-                <Link href="/admin/cars">
-                  จัดการรถ
-                </Link>
-              </>
-            )}
-
-            <Link href="/contact">
-              ติดต่อเรา
-            </Link>
-
-            {user ? (
-              <form
-                action={logoutAction}
-                className="inline-form"
-              >
-                <span className="user-label">
-                  สวัสดี {user.name}
-                </span>
-
-                <button
-                  type="submit"
-                  className="nav-button"
-                >
-                  ออกจากระบบ
-                </button>
-              </form>
-            ) : (
-              <GoogleLoginButton />
-            )}
-          </nav>
-        </header>
-
-        {children}
+        <main className="site-main">
+          {children}
+        </main>
 
         <footer>
-          Car Rent 324 • ระบบเช่ารถสำหรับโครงงาน
+          LANLODE.CNX • รถที่ใช่สำหรับคุณ
         </footer>
+
       </body>
     </html>
   );

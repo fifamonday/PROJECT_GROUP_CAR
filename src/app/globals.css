@@ -6112,3 +6112,1445 @@ footer {
     font-size: clamp(78px, 24vw, 112px);
   }
 }
+/* =========================================================
+   LANLODE STYLE HEADER / HERO
+========================================================= */
+
+.luxury-header {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: 82px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 38px;
+  background: linear-gradient(180deg, rgba(0,0,0,.72), transparent);
+}
+
+.logo-link { display:flex; align-items:center; justify-content:center; }
+.logo-link img { width: 225px; height:auto; }
+
+.menu-toggle {
+  width: 44px; height: 44px; padding: 8px 5px;
+  display:flex; flex-direction:column; justify-content:center; gap:6px;
+  background:transparent; border:0; cursor:pointer;
+}
+.menu-toggle span { display:block; width:42px; height:2px; background:var(--yellow); transition:.25s; }
+.menu-toggle.is-open span:nth-child(1){ transform:translateY(8px) rotate(45deg); }
+.menu-toggle.is-open span:nth-child(2){ opacity:0; }
+.menu-toggle.is-open span:nth-child(3){ transform:translateY(-8px) rotate(-45deg); }
+
+.header-right { display:flex; justify-content:flex-end; align-items:center; gap:34px; }
+.retailer-link { color:#eee; text-decoration:none; font-size:12px; font-weight:600; letter-spacing:2.5px; }
+.retailer-link span { color:var(--yellow); font-size:18px; margin-left:7px; }
+.view-switch { display:flex; border:1px solid #292929; }
+.view-switch > span { width:52px; height:52px; display:grid; place-content:center; gap:4px; }
+.view-switch .active { border:1px solid rgba(245,197,24,.5); }
+.view-grid { grid-template-columns:repeat(2,6px); grid-template-rows:repeat(2,6px); }
+.view-grid i { width:6px; height:6px; border:2px solid var(--yellow); }
+.view-list { grid-template-rows:repeat(3,3px); }
+.view-list i { width:22px; height:2px; background:#777; }
+
+.model-bar { position:absolute; top:82px; left:0; right:0; z-index:40; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:18px 64px; }
+.model-label { color:#aaa; letter-spacing:4px; font-size:12px; display:flex; align-items:center; gap:24px; }
+.model-label span { width:42px; height:2px; background:var(--yellow); }
+.model-nav { display:flex; gap:42px; align-items:center; }
+.model-nav a { color:#cfcfcf; text-decoration:none; font-size:17px; padding:10px 0; position:relative; }
+.model-nav a:hover,.model-nav a.active { color:var(--yellow); }
+.model-nav a.active::after { content:""; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--yellow); }
+
+.luxury-home { min-height:100vh; background:#050505; }
+.car-hero { position:relative; min-height:760px; overflow:hidden; background:#050505; isolation:isolate; }
+.hero-background { position:absolute; inset:0; z-index:-3; background:radial-gradient(circle at 52% 48%, rgba(30,30,30,.55), transparent 48%), linear-gradient(120deg,#070707 0%,#030303 55%,#101010 100%); }
+.car-hero::before { content:""; position:absolute; inset:0; z-index:-2; opacity:.42; background:linear-gradient(125deg,transparent 0 55%,rgba(245,197,24,.18) 55.1%,transparent 56%), linear-gradient(305deg,transparent 0 70%,rgba(245,197,24,.13) 70.2%,transparent 71%); }
+.hero-content { position:absolute; left:6%; bottom:76px; z-index:3; max-width:470px; }
+.hero-topline { display:flex; align-items:center; gap:14px; color:#bbb; font-size:11px; letter-spacing:3px; }
+.hero-topline .line { width:48px; height:2px; background:var(--yellow); }
+.hero-content h1 { margin:16px 0 14px; color:#fff; font-size:clamp(45px,6vw,84px); line-height:.9; letter-spacing:-2px; font-style:italic; }
+.hero-content h1 em { color:var(--yellow); font-style:italic; }
+.hero-content p { max-width:400px; color:#aaa; line-height:1.7; font-size:14px; }
+.hero-actions { display:flex; align-items:center; gap:26px; margin-top:28px; }
+.luxury-button { display:inline-flex; align-items:center; gap:14px; padding:13px 20px; color:#050505; background:var(--yellow); text-decoration:none; font-weight:800; letter-spacing:1px; }
+.luxury-button span,.hero-link span { font-size:18px; }
+.hero-link { color:#eee; text-decoration:none; font-size:12px; letter-spacing:2px; }
+.hero-link:hover { color:var(--yellow); }
+.hero-car-image { position:absolute; z-index:-1; width:min(72vw,1120px); right:5%; top:180px; transform:rotate(-1deg); filter:drop-shadow(0 35px 45px rgba(0,0,0,.9)); }
+.hero-car-image::after { content:""; position:absolute; left:8%; right:8%; bottom:12%; height:50px; background:rgba(245,197,24,.18); filter:blur(25px); border-radius:50%; }
+.hero-car-image img { width:100%; mix-blend-mode:screen; opacity:.78; }
+.hero-stat,.hero-caption { position:absolute; bottom:62px; display:flex; gap:16px; align-items:flex-start; z-index:3; }
+.hero-stat { left:46%; }
+.hero-caption { right:6%; }
+.yellow-line { width:2px; height:64px; background:var(--yellow); display:block; }
+.hero-stat strong { display:block; color:#fff; font-size:42px; line-height:.9; }
+.hero-stat span:not(.yellow-line) { display:block; color:#aaa; font-size:10px; letter-spacing:2px; margin-top:7px; }
+.hero-caption p { margin:0; color:#bbb; font-size:13px; line-height:1.55; }
+
+.luxury-content { padding-top:40px; }
+.search-panel { background:#0a0a0a; border-color:#262626; border-radius:0; }
+.search-panel-heading > span { color:var(--yellow); font-size:11px; letter-spacing:3px; }
+.search-panel-heading h2 { color:#fff; font-size:28px; margin:8px 0; }
+.search-panel-heading p { color:#777; margin-top:0; }
+
+@media (max-width: 900px) {
+  .luxury-header { padding:0 20px; grid-template-columns:1fr auto 1fr; }
+  .logo-link img { width:170px; }
+  .retailer-link { display:none; }
+  .model-bar { top:78px; display:block; padding:12px 20px; }
+  .model-label { display:none; }
+  .model-nav { justify-content:center; gap:22px; overflow-x:auto; }
+  .model-nav a { font-size:13px; white-space:nowrap; }
+  .car-hero { min-height:720px; }
+  .hero-car-image { width:95vw; right:-18%; top:220px; }
+  .hero-content { left:7%; bottom:95px; }
+  .hero-stat { left:7%; bottom:32px; }
+  .hero-caption { display:none; }
+  .view-switch { display:none; }
+}
+
+@media (max-width: 600px) {
+  .luxury-header { height:70px; }
+  .logo-link img { width:145px; }
+  .menu-toggle span { width:34px; }
+  .model-bar { top:70px; }
+  .model-nav { justify-content:flex-start; }
+  .car-hero { min-height:650px; }
+  .hero-car-image { top:200px; width:125vw; right:-34%; opacity:.72; }
+  .hero-content { bottom:72px; left:24px; right:24px; }
+  .hero-content h1 { font-size:48px; }
+  .hero-content p { font-size:12px; }
+  .hero-stat { bottom:20px; }
+  .luxury-content { width:94%; }
+}
+
+.menu-overlay { position:fixed; inset:0; z-index:55; background:rgba(0,0,0,.65); opacity:0; pointer-events:none; transition:.25s; backdrop-filter:blur(3px); }
+.menu-overlay.show { opacity:1; pointer-events:auto; }
+.side-menu { position:fixed; left:0; top:0; bottom:0; width:min(380px,88vw); z-index:60; padding:30px; background:#090909; border-right:1px solid #272727; transform:translateX(-105%); transition:.3s ease; box-shadow:20px 0 60px rgba(0,0,0,.5); }
+.side-menu.show { transform:translateX(0); }
+.side-menu-head { display:flex; justify-content:space-between; align-items:center; color:var(--yellow); letter-spacing:4px; font-size:12px; padding-bottom:28px; border-bottom:1px solid #222; }
+.side-menu-head button { color:#fff; background:none; border:0; font-size:30px; cursor:pointer; }
+.side-menu nav { display:grid; gap:8px; margin-top:25px; }
+.side-menu nav a { padding:16px 4px; color:#ddd; text-decoration:none; border-bottom:1px solid #191919; font-size:18px; }
+.side-menu nav a:hover { color:var(--yellow); }
+.side-menu-account { margin-top:35px; color:#aaa; font-size:13px; }
+.side-menu-account form { display:grid; gap:14px; }
+.side-menu-account button { width:max-content; padding:10px 15px; color:#050505; background:var(--yellow); border:0; cursor:pointer; font-weight:700; }
+/* =========================================================
+   LANLODE HEADER
+========================================================= */
+
+.luxury-site-header {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  background: #050607;
+  border-bottom: 1px solid rgba(245, 197, 24, 0.16);
+  color: #fff;
+}
+
+
+/* =========================
+   TOP HEADER
+========================= */
+
+.luxury-topbar {
+  min-height: 82px;
+  width: 100%;
+  padding: 0 3.2%;
+
+  display: grid;
+  grid-template-columns: 240px minmax(300px, 1fr) auto;
+
+  align-items: center;
+  gap: 28px;
+
+  background: #050607;
+}
+
+
+/* Logo */
+
+.luxury-logo {
+  display: flex;
+  align-items: center;
+
+  width: 180px;
+
+  text-decoration: none;
+}
+
+.luxury-logo img {
+  width: 100%;
+  height: auto;
+
+  object-fit: contain;
+}
+
+
+/* =========================
+   MAIN MENU
+========================= */
+
+.luxury-main-nav {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: clamp(18px, 2.2vw, 38px);
+
+  min-width: 0;
+}
+
+.luxury-main-nav a {
+  color: #d8d8d8;
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: color 0.2s ease;
+}
+
+.luxury-main-nav a:hover {
+  color: #f5c518;
+}
+
+
+/* =========================
+   RIGHT SIDE
+========================= */
+
+.luxury-actions {
+  display: flex;
+
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 20px;
+
+  min-width: 0;
+}
+
+
+/* FIND A RETAILER */
+
+.retailer-link {
+  color: #fff;
+
+  text-decoration: none;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  white-space: nowrap;
+}
+
+.retailer-link span {
+  color: #f5c518;
+
+  margin-left: 4px;
+}
+
+
+/* =========================
+   LOGIN / LOGOUT
+========================= */
+
+.luxury-account-form {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin: 0;
+}
+
+.luxury-account-form span {
+  color: #ddd;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+.luxury-account-form button {
+  min-height: 38px;
+
+  padding: 0 14px;
+
+  border: 1px solid #c9a65d;
+  border-radius: 6px;
+
+  background: #c9a65d;
+
+  color: #111;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =========================
+   CURRENT MODELS
+========================= */
+
+.luxury-modelbar {
+  min-height: 58px;
+
+  padding: 0 3.2%;
+
+  display: grid;
+
+  grid-template-columns: 240px minmax(300px, 1fr) auto;
+
+  align-items: center;
+
+  gap: 28px;
+
+  background: #080a0d;
+}
+
+
+/* Current Models */
+
+.luxury-model-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  color: #bfc3ca;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  letter-spacing: 3px;
+
+  white-space: nowrap;
+}
+
+.luxury-model-label i {
+  width: 42px;
+  height: 2px;
+
+  background: #f5c518;
+
+  display: block;
+}
+
+
+/* Model Menu */
+
+.luxury-model-nav {
+  display: flex;
+
+  justify-content: center;
+  align-items: stretch;
+
+  gap: clamp(24px, 3.5vw, 58px);
+
+  height: 58px;
+}
+
+.luxury-model-nav a {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  color: #d0d0d0;
+
+  text-decoration: none;
+
+  font-size: 15px;
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+.luxury-model-nav a:hover,
+.luxury-model-nav a.active {
+  color: #f5c518;
+}
+
+.luxury-model-nav a.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 2px;
+
+  background: #f5c518;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.site-main {
+  width: 100%;
+  flex: 1;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1100px) {
+
+  .luxury-topbar,
+  .luxury-modelbar {
+    grid-template-columns: 180px minmax(280px, 1fr) auto;
+
+    gap: 16px;
+  }
+
+  .luxury-logo {
+    width: 155px;
+  }
+
+  .luxury-main-nav {
+    gap: 16px;
+  }
+
+  .luxury-main-nav a {
+    font-size: 13px;
+  }
+
+  .retailer-link {
+    display: none;
+  }
+}
+
+
+@media (max-width: 760px) {
+
+  .luxury-topbar {
+    min-height: auto;
+
+    padding: 14px 20px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+  }
+
+  .luxury-logo {
+    width: 150px;
+  }
+
+  .luxury-main-nav {
+    order: 3;
+
+    width: 100%;
+
+    justify-content: flex-start;
+
+    overflow-x: auto;
+
+    padding-top: 8px;
+
+    gap: 22px;
+  }
+
+  .luxury-actions {
+    margin-left: auto;
+  }
+
+  .luxury-modelbar {
+    display: block;
+
+    padding: 12px 20px 0;
+  }
+
+  .luxury-model-label {
+    display: none;
+  }
+
+  .luxury-model-nav {
+    height: 48px;
+
+    overflow-x: auto;
+
+    justify-content: flex-start;
+
+    gap: 26px;
+  }
+}
+/* =========================================================
+   LANLODE HEADER - FINAL
+========================================================= */
+
+.luxury-site-header {
+  position: relative;
+  z-index: 50;
+
+  width: 100%;
+
+  background: #050607;
+  color: #fff;
+
+  border-bottom: 1px solid rgba(245, 197, 24, 0.15);
+}
+
+
+/* =========================
+   TOP BAR
+========================= */
+
+.luxury-topbar {
+  position: relative;
+
+  width: 100%;
+  height: 82px;
+
+  padding: 0 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  background: #050607;
+}
+
+
+/* =========================
+   LOGO - CENTER OF SCREEN
+========================= */
+
+.luxury-logo {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+
+  z-index: 20;
+}
+
+.luxury-logo img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  object-fit: contain;
+}
+
+
+/* =========================
+   RIGHT SIDE
+========================= */
+
+.luxury-actions {
+  display: flex;
+
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 20px;
+
+  position: relative;
+
+  z-index: 30;
+}
+
+
+/* FIND A RETAILER */
+
+.retailer-link {
+  color: #fff;
+
+  text-decoration: none;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  white-space: nowrap;
+}
+
+.retailer-link span {
+  color: #f5c518;
+
+  margin-left: 5px;
+}
+
+
+/* =========================
+   LOGIN / LOGOUT
+========================= */
+
+.luxury-account-form {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin: 0;
+}
+
+.luxury-account-form span {
+  color: #ddd;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+}
+
+.luxury-account-form button {
+  min-height: 38px;
+
+  padding: 0 14px;
+
+  border: 1px solid #c9a65d;
+  border-radius: 6px;
+
+  background: #c9a65d;
+
+  color: #111;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =========================
+   MODEL BAR
+========================= */
+
+.luxury-modelbar {
+  position: relative;
+
+  width: 100%;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #080a0d;
+}
+
+
+/* =========================
+   MODEL MENU - CENTER
+========================= */
+
+.luxury-model-nav {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 55px;
+
+  height: 100%;
+}
+
+.luxury-model-nav a {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  height: 100%;
+
+  color: #d0d0d0;
+
+  text-decoration: none;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  transition: color 0.2s ease;
+}
+
+.luxury-model-nav a:hover,
+.luxury-model-nav a.active {
+  color: var(--yellow-light);
+  text-shadow: 0 0 8px rgba(212, 177, 111, 0.35);
+  transition:
+    color 240ms ease,
+    text-shadow 400ms ease;
+}
+
+
+/* Active page marker */
+
+.luxury-model-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--yellow) 0%,
+    var(--yellow-light) 48%,
+    #fff3d4 52%,
+    var(--yellow) 100%
+  );
+  background-size: 220% 100%;
+  box-shadow: 0 0 8px rgba(212, 177, 111, 0.55);
+  transition: right 420ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.luxury-model-nav a:hover::after,
+.luxury-model-nav a.active::after {
+  right: 0;
+  animation: nav-underline-light-flow 2.4s linear infinite;
+}
+
+.luxury-model-nav a.active::before {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 4px;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 224, 154, 0.75),
+    transparent
+  );
+  background-size: 38% 100%;
+  background-repeat: no-repeat;
+  filter: blur(3px);
+  animation: nav-active-glint 3s ease-in-out infinite;
+}
+
+@keyframes nav-underline-light-flow {
+  to {
+    background-position: 220% 0;
+  }
+}
+
+@keyframes nav-active-glint {
+  0% {
+    background-position: -40% 0;
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+
+  100% {
+    background-position: 140% 0;
+    opacity: 0.2;
+  }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 760px) {
+
+  .luxury-topbar {
+    height: 70px;
+
+    padding: 0 16px;
+  }
+
+  .luxury-logo {
+    width: 145px;
+  }
+
+  .luxury-actions {
+    gap: 10px;
+  }
+
+  .retailer-link {
+    display: none;
+  }
+
+  .luxury-account-form span {
+    display: none;
+  }
+
+  .luxury-modelbar {
+    height: 52px;
+
+    overflow-x: auto;
+  }
+
+  .luxury-model-nav {
+    gap: 30px;
+
+    padding: 0 20px;
+  }
+
+  .luxury-model-nav a {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .luxury-model-nav a::after,
+  .luxury-model-nav a.active::before {
+    animation: none;
+    transition: none;
+  }
+}
+/* ปุ่มจัดการรายการจอง */
+
+.booking-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+
+/* ปุ่มยืนยัน */
+
+.confirm-button {
+  background: #198754;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.confirm-button:hover {
+  background: #157347;
+}
+
+
+/* ปุ่มยกเลิก */
+
+.cancel-button {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cancel-button:hover {
+  background: #bb2d3b;
+}
+/* =========================================
+   ADMIN BOOKINGS
+========================================= */
+
+.admin-bookings-page {
+  width: 100%;
+}
+
+.admin-bookings-card {
+  width: 95%;
+  max-width: 1500px;
+  margin: 40px auto;
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+.booking-search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  width: 100%;
+  margin: 25px auto;
+}
+
+.booking-search-input {
+  width: 500px;
+  max-width: 70%;
+
+  padding: 12px 16px;
+
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  font-size: 15px;
+  outline: none;
+}
+
+.booking-search-input:focus {
+  border-color: #999;
+}
+
+.booking-search-button {
+  padding: 12px 20px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #111;
+  color: white;
+
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.booking-search-button:hover {
+  background: #333;
+}
+
+.booking-clear-button {
+  padding: 12px 18px;
+
+  border-radius: 8px;
+
+  background: #eee;
+  color: #333;
+
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.booking-clear-button:hover {
+  background: #ddd;
+}
+
+
+/* =========================================
+   จำนวนรายการ
+========================================= */
+
+.booking-count {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+/* =========================================
+   ปุ่มจัดการ
+========================================= */
+
+.booking-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+
+/* ปุ่มยืนยัน */
+
+.confirm-button {
+  padding: 8px 16px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #198754;
+  color: white;
+
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.confirm-button:hover {
+  background: #157347;
+}
+
+
+/* ปุ่มยกเลิก */
+
+.cancel-button {
+  padding: 8px 16px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: #dc3545;
+  color: white;
+
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cancel-button:hover {
+  background: #bb2d3b;
+}
+
+
+/* =========================================
+   STATUS
+========================================= */
+
+.status {
+  display: inline-block;
+
+  padding: 6px 10px;
+
+  border-radius: 6px;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-success {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-danger {
+  background: #f8d7da;
+  color: #842029;
+}
+
+.status-warning {
+  background: #fff3cd;
+  color: #664d03;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-wrap th,
+.table-wrap td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-wrap th {
+  font-weight: 600;
+}
+
+/* =========================================================
+   SHARED BUTTON THEME
+========================================================= */
+
+.primary-button,
+.secondary-button,
+.danger-button,
+.nav-button,
+.confirm-button,
+.cancel-button,
+.booking-search-button,
+.booking-clear-button,
+.luxury-button,
+.luxury-account-form button,
+.side-menu-account button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.primary-button,
+.nav-button,
+.booking-search-button,
+.luxury-button,
+.luxury-account-form button,
+.side-menu-account button {
+  color: var(--black);
+  background: linear-gradient(135deg, var(--yellow-light), var(--yellow));
+  border-color: var(--yellow);
+  box-shadow: 0 6px 18px rgba(212, 177, 111, 0.16);
+}
+
+.primary-button:hover,
+.nav-button:hover,
+.booking-search-button:hover,
+.luxury-button:hover,
+.luxury-account-form button:hover,
+.side-menu-account button:hover {
+  color: var(--black);
+  background: var(--yellow-light);
+  border-color: var(--yellow-light);
+  box-shadow: 0 9px 24px rgba(212, 177, 111, 0.24);
+}
+
+.secondary-button,
+.booking-clear-button,
+.date-picker-button,
+.calendar-nav,
+.modal-close {
+  color: var(--text);
+  background: rgba(174, 192, 214, 0.07);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.secondary-button:hover,
+.booking-clear-button:hover,
+.date-picker-button:hover,
+.date-picker-button.active,
+.calendar-nav:hover,
+.modal-close:hover {
+  color: var(--white);
+  background: rgba(174, 192, 214, 0.13);
+  border-color: rgba(212, 177, 111, 0.55);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, 0.2);
+}
+
+.danger-button,
+.cancel-button {
+  color: #ffdfe3;
+  background: rgba(255, 102, 120, 0.1);
+  border-color: rgba(255, 102, 120, 0.34);
+}
+
+.danger-button:hover,
+.cancel-button:hover {
+  color: var(--white);
+  background: rgba(255, 102, 120, 0.2);
+  border-color: rgba(255, 102, 120, 0.58);
+  box-shadow: 0 7px 20px rgba(255, 102, 120, 0.12);
+}
+
+.primary-button:hover,
+.secondary-button:hover,
+.danger-button:hover,
+.nav-button:hover,
+.confirm-button:hover,
+.cancel-button:hover,
+.booking-search-button:hover,
+.booking-clear-button:hover,
+.luxury-button:hover,
+.luxury-account-form button:hover,
+.side-menu-account button:hover,
+.date-picker-button:hover,
+.calendar-nav:hover,
+.modal-close:hover {
+  transform: translateY(-2px);
+}
+
+.primary-button:active,
+.secondary-button:active,
+.danger-button:active,
+.nav-button:active,
+.confirm-button:active,
+.cancel-button:active,
+.booking-search-button:active,
+.booking-clear-button:active,
+.luxury-button:active,
+.luxury-account-form button:active,
+.side-menu-account button:active,
+.date-picker-button:active,
+.calendar-nav:active,
+.modal-close:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.date-picker-button {
+  min-height: 50px;
+  padding: 0 15px;
+}
+
+.booking-modal-actions button {
+  min-width: 135px;
+}
+
+.primary-button:disabled,
+.secondary-button:disabled,
+.danger-button:disabled,
+.nav-button:disabled,
+.confirm-button:disabled,
+.cancel-button:disabled,
+.booking-search-button:disabled {
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.side-menu-head button {
+  border-radius: 8px;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.side-menu-head button:hover {
+  color: var(--yellow);
+  background: rgba(174, 192, 214, 0.08);
+}
+
+.confirm-button {
+  color: #8bf2c5;
+  background: rgba(84, 223, 171, 0.1);
+  border-color: rgba(84, 223, 171, 0.38);
+  box-shadow: 0 0 14px rgba(45, 210, 145, 0.1);
+  text-shadow:
+    0 0 6px rgba(84, 223, 171, 0.55),
+    0 0 14px rgba(45, 210, 145, 0.3);
+}
+
+.confirm-button:hover {
+  color: #d5ffed;
+  background: rgba(84, 223, 171, 0.18);
+  border-color: rgba(84, 223, 171, 0.65);
+  box-shadow: 0 0 20px rgba(45, 210, 145, 0.22);
+}
+
+.cancel-button {
+  color: #ff9aa5;
+  background: rgba(255, 102, 120, 0.1);
+  border-color: rgba(255, 102, 120, 0.38);
+  box-shadow: 0 0 14px rgba(255, 65, 90, 0.08);
+  text-shadow:
+    0 0 6px rgba(255, 102, 120, 0.55),
+    0 0 14px rgba(255, 65, 90, 0.3);
+}
+
+.cancel-button:hover {
+  color: #ffe0e4;
+  background: rgba(255, 102, 120, 0.18);
+  border-color: rgba(255, 102, 120, 0.65);
+  box-shadow: 0 0 20px rgba(255, 65, 90, 0.2);
+}
+
+.status-danger {
+  color: #ff8a98;
+  background: transparent;
+  text-shadow:
+    0 0 6px rgba(255, 102, 120, 0.8),
+    0 0 16px rgba(255, 65, 90, 0.55);
+}
+
+.status-success {
+  color: #75f0bd;
+  background: transparent;
+  text-shadow:
+    0 0 6px rgba(84, 223, 171, 0.8),
+    0 0 16px rgba(45, 210, 145, 0.55);
+}
+
+.status-warning {
+  color: var(--yellow-light);
+  background: transparent;
+  text-shadow:
+    0 0 6px rgba(212, 177, 111, 0.8),
+    0 0 16px rgba(212, 177, 111, 0.55);
+}
+
+body {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 50% -22%, rgba(212, 177, 111, 0.09), transparent 42rem),
+    linear-gradient(180deg, #0c1118 0%, #090d13 52%, #0c1118 100%);
+  background-attachment: fixed;
+}
+
+body::before {
+  position: fixed;
+  z-index: -1;
+  inset: -18%;
+  content: "";
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 18% 28%, rgba(212, 177, 111, 0.1), transparent 34%),
+    radial-gradient(ellipse at 78% 62%, rgba(45, 105, 160, 0.09), transparent 38%);
+  opacity: 0.72;
+  transform: translate3d(-1.5%, -1%, 0);
+  animation: ambient-background-drift 18s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+body::after {
+  position: fixed;
+  z-index: -1;
+  inset: -60%;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    transparent 47%,
+    rgba(212, 177, 111, 0.015) 48.5%,
+    rgba(212, 177, 111, 0.09) 49.4%,
+    rgba(255, 224, 154, 0.2) 50%,
+    rgba(212, 177, 111, 0.09) 50.6%,
+    rgba(212, 177, 111, 0.015) 51.5%,
+    transparent 53%
+  );
+  mix-blend-mode: screen;
+  transform: translate3d(-28%, 0, 0);
+  animation: background-light-sweep 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes ambient-background-drift {
+  from {
+    opacity: 0.48;
+    transform: translate3d(-1.5%, -1%, 0) scale(1);
+  }
+
+  to {
+    opacity: 0.82;
+    transform: translate3d(1.5%, 1%, 0) scale(1.04);
+  }
+}
+
+@keyframes background-light-sweep {
+  0%,
+  12% {
+    transform: translate3d(-28%, 0, 0);
+    opacity: 0;
+  }
+
+  24% {
+    opacity: 0.85;
+  }
+
+  76% {
+    opacity: 0.65;
+  }
+
+  88%,
+  100% {
+    transform: translate3d(28%, 0, 0);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after {
+    animation: none;
+    will-change: auto;
+  }
+}
+.luxury-hero {
+  position: relative;
+  border-radius: 18px;
+  padding: 1px;
+  overflow: hidden;
+
+  background: #181818;
+}
+
+/* ไฟวิ่งรอบกรอบ */
+.luxury-hero::before {
+  content: "";
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,
+    rgba(212, 175, 55, 0.05) 315deg,
+    rgba(255, 220, 130, 0.9) 330deg,
+    #d4af37 345deg,
+    transparent 360deg
+  );
+
+  animation: luxury-light 5s linear infinite;
+}
+
+/* ตัว Hero จริง */
+.luxury-hero-content {
+  position: relative;
+  z-index: 1;
+
+  min-height: 450px;
+  border-radius: 17px;
+
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(255, 255, 255, 0.04),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #191919,
+      #101216
+    );
+}
+
+/* Animation ไฟวิ่ง */
+@keyframes luxury-light {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+.luxury-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+
+  box-shadow:
+    0 0 20px rgba(212, 175, 55, 0.08),
+    inset 0 0 30px rgba(212, 175, 55, 0.03);
+
+  pointer-events: none;
+  z-index: 2;
+}
