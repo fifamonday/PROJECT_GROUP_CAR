@@ -10,7 +10,7 @@
 - Admin เพิ่ม แก้ไข ลบรถ
 - Admin ดูรายการจองและยืนยัน/ยกเลิก
 - React Hook Form + Zod สำหรับรับและตรวจสอบข้อมูล
-- แยก Component และ `lib` ตามแนวทางโปรเจกต์เดิม
+- แยกโค้ดตามฟีเจอร์เพื่อให้ง่ายต่อการค้นหาและดูแล
 - ข้อมูลเก็บใน `data/*.json` เหมาะสำหรับสาธิตงานในเครื่อง
 
 ## บัญชีตัวอย่าง
@@ -25,16 +25,10 @@ npm run dev
 เปิด `http://localhost:3000`
 
 ## โครงสร้างสำคัญ
-- `app/page.tsx` หน้าแรก
-- `app/components/CarExplorer.tsx` แสดง/ค้นหารถ
-- `app/components/CarSearchForm.tsx` ฟอร์มค้นหา
-- `app/components/CarForm.tsx` ฟอร์มเพิ่ม/แก้ไขรถ
-- `app/components/BookingForm.tsx` ฟอร์มเช่ารถ
-- `app/lib/cars.ts` Schema, Type และ CRUD รถ
-- `app/lib/auth.ts` ระบบผู้ใช้และ Session
-- `app/lib/bookings.ts` ข้อมูลรายการเช่า
-- `app/actions/*.ts` รับข้อมูลจาก Form แล้วประมวลผล
-- `app/admin/*` ส่วนผู้ดูแลระบบ
+- `src/app/` หน้าเว็บและ route ของ Next.js
+- `src/features/auth/` ระบบผู้ใช้, NextAuth และคอมโพเนนต์เข้าสู่ระบบ
+- `src/features/cars/` ค้นหาและจัดการรถ, schema และข้อมูลรถ
+- `src/features/bookings/` ฟอร์มเช่าและการจัดการรายการจอง
 - `data/*.json` ข้อมูลตัวอย่าง
 
 หมายเหตุ: การเก็บ JSON เหมาะสำหรับโครงงาน/เดโมในเครื่อง ไม่ใช่แนวทางสำหรับ production ที่มีผู้ใช้จำนวนมาก

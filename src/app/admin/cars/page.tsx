@@ -1,0 +1,71 @@
+import { getCurrentUser } from "@/features/auth/service";
+import { getCars } from "@/features/cars/service";
+import { redirect } from "next/navigation";
+import Link from "next/link";
+import CarForm from "@/features/cars/components/CarForm";
+import { deleteCarAction } from "@/features/cars/actions";
+
+export default async function AdminCars() {
+  const user = await getCurrentUser();
+
+  if (user?.role !== "admin") {
+    redirect("/login?error=เฉพาะผู้ดูแลระบบ");
+  }
+
+  const cars = await getCars();
+
+  return (
+    <main className="container">
+      <div className="section-title">
+        <div>
+          <h1>จัดการรถ</h1>
+          <p>เพิ่ม แก้ไข และลบรถที่ให้บริการ</p>
+        </div>
+      </div>
+
+      <div className="admin-layout">
+        <section className="panel">
+          <h2>เพิ่มรถใหม่</h2>
+          <CarForm />
+        </section>
+
+        <section>
+          <h2>รถในระบบ ({cars.length})</h2>
+
+          <div className="admin-list">
+            {cars.map((car) => (
+              <div className="admin-car" key={car.id}>
+                <img
+                  src={car.image}
+                  alt={car.name}
+                />
+
+                <div>
+                  <h3>{car.name}</h3>
+                  <p>
+                    {car.type} • ฿{car.pricePerDay.toLocaleString()}/วัน
+                  </p>
+                </div>
+
+                <div className="admin-actions">
+                  <Link
+                    href={`/admin/cars/${car.id}`}
+                    className="secondary-button"
+                  >
+                    แก้ไข
+                  </Link>
+
+                  <form action={deleteCarAction.bind(null, car.id)}>
+                    <button type="submit" className="danger-button">
+                      ลบ
+                    </button>
+                  </form>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
