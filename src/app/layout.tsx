@@ -29,7 +29,7 @@ export default async function RootLayout({
               รถเช่า
             </Link>
 
-            {user && (
+            {user && user.role !== "admin" && (
               <Link href="/account">
                 รายการเช่า
               </Link>
@@ -46,6 +46,10 @@ export default async function RootLayout({
                 </Link>
               </>
             )}
+
+            <Link href="/contact">
+              ติดต่อเรา
+            </Link>
 
             {user ? (
               <form

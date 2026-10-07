@@ -1,9 +1,28 @@
-import { createCarAction } from "@/features/cars/actions";
+import Link from "next/link";
+import { updateCarAction } from "@/features/cars/actions";
 
-export default function CarForm() {
+type Car = {
+  id: number;
+  name: string;
+  brand: string;
+  licensePlate: string;
+  type: string;
+  pricePerDay: number;
+  seats: number;
+  transmission: string;
+  fuel: string;
+  image: string;
+  available: boolean;
+};
+
+type EditProps = {
+  car: Car;
+};
+
+export default function Edit({ car }: EditProps) {
   return (
     <form
-      action={createCarAction}
+      action={updateCarAction.bind(null, car.id)}
       className="admin-form"
     >
       <div className="two-col">
@@ -16,7 +35,7 @@ export default function CarForm() {
             id="name"
             name="name"
             type="text"
-            placeholder="เช่น Toyota Camry"
+            defaultValue={car.name}
             required
           />
         </div>
@@ -30,7 +49,7 @@ export default function CarForm() {
             id="brand"
             name="brand"
             type="text"
-            placeholder="เช่น Toyota"
+            defaultValue={car.brand}
             required
           />
         </div>
@@ -45,6 +64,7 @@ export default function CarForm() {
           id="licensePlate"
           name="licensePlate"
           type="text"
+          defaultValue={car.licensePlate}
           placeholder="เช่น กข 1234 เชียงใหม่"
           required
         />
@@ -59,7 +79,7 @@ export default function CarForm() {
           <select
             id="type"
             name="type"
-            defaultValue="รถเก๋ง"
+            defaultValue={car.type}
             required
           >
             <option value="รถเก๋ง">
@@ -86,7 +106,7 @@ export default function CarForm() {
 
         <div>
           <label htmlFor="pricePerDay">
-            ราคา / วัน
+            ราคาเช่าต่อวัน
           </label>
 
           <input
@@ -94,7 +114,7 @@ export default function CarForm() {
             name="pricePerDay"
             type="number"
             min="0"
-            placeholder="เช่น 1500"
+            defaultValue={car.pricePerDay}
             required
           />
         </div>
@@ -111,7 +131,7 @@ export default function CarForm() {
             name="seats"
             type="number"
             min="1"
-            placeholder="เช่น 5"
+            defaultValue={car.seats}
             required
           />
         </div>
@@ -124,11 +144,11 @@ export default function CarForm() {
           <select
             id="transmission"
             name="transmission"
-            defaultValue="อัตโนมัติ"
+            defaultValue={car.transmission}
             required
           >
             <option value="อัตโนมัติ">
-              ออโต้
+              อัตโนมัติ
             </option>
 
             <option value="ธรรมดา">
@@ -146,7 +166,7 @@ export default function CarForm() {
         <select
           id="fuel"
           name="fuel"
-          defaultValue="เบนซิน"
+          defaultValue={car.fuel}
           required
         >
           <option value="เบนซิน">
@@ -176,7 +196,7 @@ export default function CarForm() {
           id="image"
           name="image"
           type="url"
-          placeholder="https://example.com/car.jpg"
+          defaultValue={car.image}
           required
         />
       </div>
@@ -185,18 +205,27 @@ export default function CarForm() {
         <input
           type="checkbox"
           name="available"
-          defaultChecked
+          defaultChecked={car.available}
         />
 
-        เปิดให้เช่า
+        รถคันนี้พร้อมให้เช่า
       </label>
 
-      <button
-        type="submit"
-        className="primary-button"
-      >
-        เพิ่มรถเข้าระบบ
-      </button>
+      <div className="admin-actions">
+        <button
+          type="submit"
+          className="primary-button"
+        >
+          บันทึกการแก้ไข
+        </button>
+
+        <Link
+          href="/admin/cars"
+          className="secondary-button"
+        >
+          ยกเลิก
+        </Link>
+      </div>
     </form>
   );
 }

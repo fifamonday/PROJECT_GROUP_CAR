@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/features/auth/service";
 
 import {
   createBooking,
+  updateBooking,
   updateBookingStatus,
 } from "@/features/bookings/service";
 
@@ -85,10 +86,11 @@ export async function createBookingAction(
 
     userName: user.name,
 
-    // สำคัญ: บันทึก Email ของ Google คนที่จอง
     userEmail: user.email,
 
     carName: car.name,
+
+    licensePlate: car.licensePlate,
 
     startDate: start,
 
@@ -104,6 +106,46 @@ export async function createBookingAction(
   redirect("/account");
 }
 
+/* =========================
+   EDIT BOOKING
+========================= */
+
+export async function updateBookingAction(
+  id: number,
+  fd: FormData
+) {
+  const user = await getCurrentUser();
+
+  if (user?.role !== "admin") {
+    redirect("/");
+  }
+
+  const endDate = String(
+    fd.get("endDate") || ""
+  );
+
+  if (!endDate) {
+    throw new Error(
+      "กรุณาเลือกวันคืนรถ"
+    );
+  }
+
+  await updateBooking(
+    id,
+    endDate
+  );
+
+  revalidatePath("/admin/bookings");
+
+  revalidatePath("/account");
+
+  redirect("/admin/bookings");
+}
+
+/* =========================
+   UPDATE STATUS
+========================= */
+
 export async function updateBookingStatusAction(
   id: number,
   status: "ยืนยันแล้ว" | "ยกเลิก"
@@ -114,7 +156,10 @@ export async function updateBookingStatusAction(
     redirect("/");
   }
 
-  await updateBookingStatus(id, status);
+  await updateBookingStatus(
+    id,
+    status
+  );
 
   revalidatePath("/admin/bookings");
 

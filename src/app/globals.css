@@ -325,12 +325,13 @@ a {
 
   display: grid;
 
-  grid-template-columns:
-    2fr 1fr 1fr auto;
+  grid-template-columns: 2fr 1fr auto;
 
-  gap: 12px;
+  gap: 16px;
 
   align-items: end;
+
+  margin-bottom: 20px;
 }
 
 .search-form label,
@@ -383,6 +384,17 @@ a {
 
 input::placeholder {
   color: #666666;
+}
+
+
+/* =========================================================
+   SEARCH BUTTON
+========================================================= */
+
+.search-form .primary-button {
+  min-width: 150px;
+
+  white-space: nowrap;
 }
 
 
@@ -624,124 +636,245 @@ input::placeholder {
 
 .admin-bookings-table {
   width: 100%;
+
   table-layout: fixed;
+
   border-collapse: collapse;
+
   background: var(--black-2);
+
   border: 1px solid var(--border);
+
   border-radius: 12px;
+
   overflow: hidden;
 }
 
+
+/* ลำดับ */
+
 .admin-bookings-table th:nth-child(1),
 .admin-bookings-table td:nth-child(1) {
-  width: 18%;
+  width: 60px !important;
+
+  min-width: 60px !important;
+
+  max-width: 60px !important;
+
+  text-align: center !important;
+
+  padding-left: 6px !important;
+
+  padding-right: 6px !important;
+
+  white-space: nowrap !important;
 }
+
+
+/* ผู้เช่า */
 
 .admin-bookings-table th:nth-child(2),
 .admin-bookings-table td:nth-child(2) {
-  width: 13%;
+  width: 16%;
 }
+
+
+/* รถ */
 
 .admin-bookings-table th:nth-child(3),
 .admin-bookings-table td:nth-child(3) {
-  width: 11%;
+  width: 10%;
 }
+
+
+/* ทะเบียนรถ */
 
 .admin-bookings-table th:nth-child(4),
 .admin-bookings-table td:nth-child(4) {
-  width: 11%;
+  width: 10%;
 }
+
+
+/* วันที่รับ */
 
 .admin-bookings-table th:nth-child(5),
 .admin-bookings-table td:nth-child(5) {
-  width: 9%;
+  width: 10%;
 }
+
+
+/* วันที่คืน */
 
 .admin-bookings-table th:nth-child(6),
 .admin-bookings-table td:nth-child(6) {
   width: 10%;
 }
 
+
+/* จำนวนวัน */
+
 .admin-bookings-table th:nth-child(7),
 .admin-bookings-table td:nth-child(7) {
-  width: 11%;
+  width: 7%;
 }
+
+
+/* รวม */
 
 .admin-bookings-table th:nth-child(8),
 .admin-bookings-table td:nth-child(8) {
-  width: 17%;
+  width: 9%;
 }
+
+
+/* สถานะ */
+
+.admin-bookings-table th:nth-child(9),
+.admin-bookings-table td:nth-child(9) {
+  width: 10%;
+}
+
+
+/* จัดการ */
+
+.admin-bookings-table th:nth-child(10),
+.admin-bookings-table td:nth-child(10) {
+  width: 20%;
+}
+
+
+/* HEADER */
 
 .admin-bookings-table th {
   padding: 14px 12px;
+
   text-align: left;
+
   font-weight: 700;
+
   white-space: nowrap;
+
   color: var(--yellow);
+
   background: #111111;
+
   border-bottom: 2px solid #e5e7eb;
 }
 
+
+/* CELL */
+
 .admin-bookings-table td {
   padding: 14px 12px;
+
   text-align: left;
+
   vertical-align: middle;
+
   color: #dddddd;
+
   border-bottom: 1px solid #242424;
+
   overflow-wrap: anywhere;
+
   word-break: break-word;
 }
 
+
+/* ลำดับ */
+
+.admin-bookings-table td:first-child,
+.admin-bookings-table th:first-child {
+  text-align: center !important;
+}
+
+
+/* ผู้เช่า */
+
 .admin-bookings-table .booking-user {
   display: flex;
+
   flex-direction: column;
+
   gap: 4px;
+
   min-width: 0;
 }
 
 .admin-bookings-table .booking-user strong {
   overflow-wrap: anywhere;
+
   word-break: break-word;
 }
 
 .admin-bookings-table .booking-user small {
   color: var(--muted);
+
   overflow-wrap: anywhere;
+
   word-break: break-word;
 }
 
+
+/* =========================================================
+   BOOKING ACTION BUTTONS
+========================================================= */
+
 .admin-bookings-table .admin-actions {
+  width: 100%;
+
   display: flex;
+
   align-items: center;
+
+  justify-content: flex-start;
+
   gap: 8px;
+
   flex-wrap: wrap;
+
+  margin: 0;
+
+  padding: 0;
 }
 
 .admin-bookings-table .admin-actions form {
+  width: auto;
+
+  max-width: none;
+
+  min-width: 0;
+
   margin: 0;
+
+  padding: 0;
+
+  display: flex;
 }
 
 .admin-bookings-table .admin-actions button {
+  width: auto;
+
+  min-width: 70px;
+
   white-space: nowrap;
 }
+
+
+/* =========================================================
+   STATUS
+========================================================= */
 
 .admin-bookings-table .status {
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
+
   white-space: nowrap;
 }
 
-@media (max-width: 900px) {
-  .table-wrap {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  .admin-bookings-table {
-    min-width: 1000px;
-  }
-}
 
 /* =========================================================
    ADMIN FORM
@@ -887,8 +1020,6 @@ input::placeholder {
   padding: 15px 18px 0 !important;
 }
 
-
-/* ชื่อรถ */
 .admin-car > div:not(.admin-actions) h3 {
   display: block !important;
 
@@ -915,8 +1046,6 @@ input::placeholder {
   text-overflow: ellipsis !important;
 }
 
-
-/* รายละเอียดรถ */
 .admin-car > div:not(.admin-actions) p {
   display: block !important;
 
@@ -964,8 +1093,6 @@ input::placeholder {
   gap: 10px !important;
 }
 
-
-/* ปุ่มแก้ไข */
 .admin-actions > .secondary-button {
   width: calc(50% - 5px) !important;
 
@@ -974,8 +1101,6 @@ input::placeholder {
   margin: 0 !important;
 }
 
-
-/* form ปุ่มลบ */
 .admin-actions form {
   width: calc(50% - 5px) !important;
 
@@ -990,8 +1115,6 @@ input::placeholder {
   display: flex !important;
 }
 
-
-/* ปุ่มลบ */
 .admin-actions form .danger-button {
   width: 100% !important;
 
@@ -1450,6 +1573,16 @@ footer {
     grid-template-columns:
       repeat(2, minmax(0, 1fr));
   }
+
+  .table-wrap {
+    width: 100%;
+
+    overflow-x: auto;
+  }
+
+  .admin-bookings-table {
+    min-width: 1250px;
+  }
 }
 
 
@@ -1465,8 +1598,13 @@ footer {
   }
 
   .search-form {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr auto;
+
+    gap: 12px;
+  }
+
+  .search-form .primary-button {
+    min-width: 120px;
   }
 
   .admin-list {
@@ -1519,6 +1657,14 @@ footer {
 
   .search-form {
     grid-template-columns: 1fr;
+
+    gap: 12px;
+  }
+
+  .search-form .primary-button {
+    width: 100%;
+
+    min-width: 0;
   }
 
   .car-grid {
@@ -1540,11 +1686,6 @@ footer {
 
     max-width: 100% !important;
   }
-
-  /*
-     จอมือถือยังใช้ 2 ช่อง
-     เพื่อให้การ์ดไม่กว้างเกินไป
-  */
 
   .admin-list {
     width: 100% !important;
@@ -1612,10 +1753,6 @@ footer {
 }
 
 
-/* =========================================================
-   RESPONSIVE 480px
-========================================================= */
-
 @media (max-width: 480px) {
   .admin-list {
     grid-template-columns: 1fr !important;
@@ -1644,14 +1781,24 @@ footer {
   }
 }
 
-/* Visual polish */
+
+/* =========================================================
+   VISUAL POLISH
+========================================================= */
 
 body {
   min-height: 100vh;
+
   display: flex;
+
   flex-direction: column;
+
   background:
-    radial-gradient(ellipse at 50% -20%, rgba(245, 197, 24, 0.08), transparent 45%),
+    radial-gradient(
+      ellipse at 50% -20%,
+      rgba(245, 197, 24, 0.08),
+      transparent 45%
+    ),
     var(--black);
 }
 
@@ -1661,9 +1808,13 @@ body > main {
 
 .navbar {
   position: sticky;
+
   top: 0;
+
   z-index: 10;
+
   background: rgba(8, 8, 8, 0.92);
+
   backdrop-filter: blur(14px);
 }
 
@@ -1692,27 +1843,39 @@ body > main {
 
 .hero {
   position: relative;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.24);
 }
 
 .hero-car {
   min-height: 230px;
+
   color: var(--yellow);
+
   font-size: clamp(110px, 18vw, 190px);
+
   line-height: 1;
-  filter: drop-shadow(0 18px 28px rgba(245, 197, 24, 0.14));
+
+  filter:
+    drop-shadow(
+      0 18px 28px rgba(245, 197, 24, 0.14)
+    );
 }
 
 .panel,
 .account-card,
 .auth-card {
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.18);
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.18);
 }
 
 .primary-button:hover,
 .nav-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 22px rgba(245, 197, 24, 0.18);
+
+  box-shadow:
+    0 8px 22px rgba(245, 197, 24, 0.18);
 }
 
 .secondary-button:hover,
@@ -1721,7 +1884,8 @@ body > main {
 }
 
 .car-card {
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
 .car-card > img,
@@ -1731,7 +1895,8 @@ body > main {
 }
 
 .car-card > img {
-  transition: transform 240ms ease;
+  transition:
+    transform 240ms ease;
 }
 
 .car-card:hover > img {
@@ -1756,27 +1921,37 @@ body > main {
 
 .rent-content h1 {
   margin: 12px 0 6px;
+
   color: var(--white);
+
   font-size: clamp(26px, 4vw, 36px);
 }
 
 .rent-content > p {
   color: var(--muted);
+
   line-height: 1.7;
 }
 
 .rent-price small {
   color: var(--muted);
+
   font-size: 14px;
+
   font-weight: 400;
 }
 
 .back {
   display: inline-flex;
+
   margin-bottom: 18px;
+
   color: var(--muted);
+
   text-decoration: none;
-  transition: color 160ms ease;
+
+  transition:
+    color 160ms ease;
 }
 
 .back:hover {
@@ -1785,19 +1960,27 @@ body > main {
 
 .empty {
   padding: 30px 20px;
+
   color: var(--muted);
-  background: rgba(255, 255, 255, 0.025);
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
   border: 1px dashed #393939;
+
   border-radius: 12px;
+
   text-align: center;
 }
 
 .table-wrap tbody tr {
-  transition: background-color 160ms ease;
+  transition:
+    background-color 160ms ease;
 }
 
 .table-wrap tbody tr:hover {
-  background: rgba(255, 255, 255, 0.035);
+  background:
+    rgba(255, 255, 255, 0.035);
 }
 
 .table-wrap tbody tr:last-child td {
@@ -1809,12 +1992,15 @@ select:focus-visible,
 textarea:focus-visible,
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid var(--yellow-light);
+  outline:
+    2px solid var(--yellow-light);
+
   outline-offset: 3px;
 }
 
 button:disabled {
   opacity: 0.5;
+
   cursor: not-allowed;
 }
 
@@ -1823,11 +2009,19 @@ button:disabled {
   *::before,
   *::after {
     scroll-behavior: auto !important;
+
     transition-duration: 0.01ms !important;
+
     animation-duration: 0.01ms !important;
+
     animation-iteration-count: 1 !important;
   }
 }
+
+
+/* =========================================================
+   MOBILE POLISH
+========================================================= */
 
 @media (max-width: 700px) {
   .navbar {
@@ -1836,6 +2030,7 @@ button:disabled {
 
   .hero-car {
     min-height: 140px;
+
     font-size: 120px;
   }
 
@@ -1845,5 +2040,104 @@ button:disabled {
 
   .account-card {
     padding: 20px;
+  }
+}
+
+
+/* =========================================================
+   BOOKING ORDER COLUMN
+========================================================= */
+
+.admin-bookings-table th:first-child,
+.admin-bookings-table td:first-child {
+  width: 60px !important;
+
+  min-width: 60px !important;
+
+  max-width: 60px !important;
+
+  padding-left: 6px !important;
+
+  padding-right: 6px !important;
+
+  text-align: center !important;
+
+  white-space: nowrap !important;
+}
+
+
+/* =========================================================
+   BOOKING TABLE ACTION OVERRIDE
+   ป้องกัน CSS ADMIN ACTIONS ด้านบน
+   ไม่ให้ปุ่มในตารางถูกบีบ
+========================================================= */
+
+.admin-bookings-table td:nth-child(10) .admin-actions {
+  width: 100% !important;
+
+  max-width: none !important;
+
+  min-width: 0 !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+
+  display: flex !important;
+
+  flex-direction: row !important;
+
+  align-items: center !important;
+
+  justify-content: flex-start !important;
+
+  gap: 8px !important;
+
+  flex-wrap: wrap !important;
+}
+
+.admin-bookings-table td:nth-child(10) .admin-actions form {
+  width: auto !important;
+
+  max-width: none !important;
+
+  min-width: 0 !important;
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+
+  display: flex !important;
+}
+
+.admin-bookings-table td:nth-child(10) .admin-actions
+.secondary-button,
+.admin-bookings-table td:nth-child(10) .admin-actions
+.primary-button,
+.admin-bookings-table td:nth-child(10) .admin-actions
+.danger-button {
+  width: auto !important;
+
+  min-width: 70px !important;
+
+  max-width: none !important;
+
+  min-height: 40px !important;
+
+  padding: 0 12px !important;
+
+  white-space: nowrap !important;
+
+  flex-shrink: 0 !important;
+}
+
+
+/* =========================================================
+   BOOKING TABLE MOBILE
+========================================================= */
+
+@media (max-width: 1100px) {
+  .admin-bookings-table {
+    min-width: 1250px;
   }
 }

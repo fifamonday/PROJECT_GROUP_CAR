@@ -153,6 +153,13 @@ export default function BookingForm({ car }: { car: Car }) {
         value={car.id}
       />
 
+      {/* เพิ่มทะเบียนรถ */}
+      <input
+        type="hidden"
+        name="licensePlate"
+        value={car.licensePlate}
+      />
+
       <input
         type="hidden"
         name="startDate"
