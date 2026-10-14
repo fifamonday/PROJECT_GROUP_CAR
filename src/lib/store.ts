@@ -1,3 +1,4 @@
+// อ่านและบันทึกข้อมูลจาก JSON หรือ Redis
 import "server-only";
 
 import fs from "fs/promises";

@@ -1,4 +1,4 @@
-
+// หน้าผู้ดูแลจัดการรายการจอง
 import Link from "next/link";
 import { redirect } from "next/navigation";
 

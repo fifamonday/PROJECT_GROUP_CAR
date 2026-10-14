@@ -1,4 +1,4 @@
-
+// ควบคุมสิทธิ์และเรียกใช้การจัดการรถ
 "use server";
 
 import { getCurrentUser } from "@/features/auth/service";

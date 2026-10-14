@@ -1,4 +1,4 @@
-
+// ประวัติการเช่าของผู้ใช้ที่เข้าสู่ระบบ
 import { getCurrentUser } from "@/features/auth/service";
 import { getUserBookings } from "@/features/bookings/service";
 import { redirect } from "next/navigation";

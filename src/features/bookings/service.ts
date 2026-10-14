@@ -1,4 +1,4 @@
-
+// ประมวลผลข้อมูลการจองและสถานะ
 import "server-only";
 
 import { z } from "zod";
