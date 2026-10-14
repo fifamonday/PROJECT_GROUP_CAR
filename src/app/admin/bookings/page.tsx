@@ -1,9 +1,11 @@
+
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/features/auth/service";
 import { getBookings } from "@/features/bookings/service";
 import { updateBookingStatusAction } from "@/features/bookings/actions";
+import ReturnCarButton from "@/features/bookings/components/ReturnCarButton";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -17,37 +19,16 @@ type PageProps = {
 export default async function AdminBookingsPage({
   searchParams,
 }: PageProps) {
-  // =========================
-  // ตรวจสอบ Admin
-  // =========================
-
   const user = await getCurrentUser();
 
   if (!user || user.role !== "admin") {
     redirect("/");
   }
 
-  // =========================
-  // ดึงข้อมูลการจอง
-  // =========================
-
   const bookings = await getBookings();
-
-  // =========================
-  // รับคำค้นหา
-  // =========================
 
   const params = await searchParams;
   const keyword = (params.q ?? "").trim().toLowerCase();
-
-  // =========================
-  // กรองข้อมูล
-  // ค้นหาจาก:
-  // ชื่อลูกค้า
-  // อีเมล
-  // ชื่อรถ
-  // ทะเบียนรถ
-  // =========================
 
   const filteredBookings = bookings.filter((booking) => {
     if (!keyword) {
@@ -55,40 +36,23 @@ export default async function AdminBookingsPage({
     }
 
     return (
-      booking.userName
-        .toLowerCase()
-        .includes(keyword) ||
-
-      (booking.userEmail ?? "")
-        .toLowerCase()
-        .includes(keyword) ||
-
-      booking.carName
-        .toLowerCase()
-        .includes(keyword) ||
-
-      booking.licensePlate
-        .toLowerCase()
-        .includes(keyword)
+      booking.userName.toLowerCase().includes(keyword) ||
+      (booking.userEmail ?? "").toLowerCase().includes(keyword) ||
+      booking.carName.toLowerCase().includes(keyword) ||
+      booking.licensePlate.toLowerCase().includes(keyword)
     );
   });
+  const pendingBookings = filteredBookings.filter(
+    (booking) => booking.status === "รอยืนยัน"
+  ).length;
 
   return (
     <main className="admin-bookings-page">
-
       <div className="admin-bookings-card">
-
-        {/* =========================
-            Header
-        ========================= */}
-
-        <div className="admin-bookings-header">
-
+        <header className="admin-bookings-header">
           <div>
-            <h1>
-              รายการจองรถ
-            </h1>
-
+            <span className="account-eyebrow">ADMIN • BOOKINGS</span>
+            <h1>รายการจองรถ</h1>
             <p className="muted">
               จัดการรายการเช่ารถของลูกค้า
             </p>
@@ -100,19 +64,20 @@ export default async function AdminBookingsPage({
           >
             จัดการรถ
           </Link>
+        </header>
 
+        <div className="account-booking-stats" aria-label="สรุปรายการจองรถ">
+          <div>
+            <span>รายการที่พบ</span>
+            <strong>{filteredBookings.length} <small>รายการ</small></strong>
+          </div>
+          <div>
+            <span>รอการยืนยัน</span>
+            <strong>{pendingBookings} <small>รายการ</small></strong>
+          </div>
         </div>
 
-
-        {/* =========================
-            ช่องค้นหา
-        ========================= */}
-
-        <form
-          method="GET"
-          className="booking-search-form"
-        >
-
+        <form method="GET" className="booking-search-form">
           <input
             type="text"
             name="q"
@@ -136,39 +101,20 @@ export default async function AdminBookingsPage({
               ล้าง
             </Link>
           )}
-
         </form>
 
-
-        {/* =========================
-            จำนวนรายการ
-        ========================= */}
-
-        <p className="muted booking-count">
-          พบ {filteredBookings.length} รายการ
-        </p>
-
-
-        {/* =========================
-            ไม่มีข้อมูล
-        ========================= */}
+        <p className="muted booking-count">ผลการค้นหารายการจอง</p>
 
         {filteredBookings.length === 0 ? (
-
           <div className="empty">
             {keyword
               ? "ไม่พบข้อมูลที่ค้นหา"
               : "ยังไม่มีรายการจองรถ"}
           </div>
-
         ) : (
-
-          <div className="table-wrap">
-
-            <table>
-
+          <div className="table-wrap admin-bookings-table-wrap">
+            <table className="admin-bookings-table">
               <thead>
-
                 <tr>
                   <th>ลูกค้า</th>
                   <th>อีเมล</th>
@@ -181,79 +127,27 @@ export default async function AdminBookingsPage({
                   <th>สถานะ</th>
                   <th>จัดการ</th>
                 </tr>
-
               </thead>
 
-
               <tbody>
-
                 {filteredBookings.map((booking) => (
-
                   <tr key={booking.id}>
-
-                    {/* ลูกค้า */}
-
+                    <td>{booking.userName}</td>
+                    <td>{booking.userEmail || "-"}</td>
+                    <td>{booking.carName}</td>
+                    <td>{booking.licensePlate}</td>
+                    <td>{booking.startDate}</td>
+                    <td>{booking.endDate}</td>
+                    <td>{booking.days} วัน</td>
                     <td>
-                      {booking.userName}
+                      ฿{booking.total.toLocaleString("th-TH")}
                     </td>
 
-
-                    {/* อีเมล */}
-
                     <td>
-                      {booking.userEmail || "-"}
-                    </td>
-
-
-                    {/* รถ */}
-
-                    <td>
-                      {booking.carName}
-                    </td>
-
-
-                    {/* ทะเบียน */}
-
-                    <td>
-                      {booking.licensePlate}
-                    </td>
-
-
-                    {/* วันที่รับ */}
-
-                    <td>
-                      {booking.startDate}
-                    </td>
-
-
-                    {/* วันที่คืน */}
-
-                    <td>
-                      {booking.endDate}
-                    </td>
-
-
-                    {/* จำนวนวัน */}
-
-                    <td>
-                      {booking.days} วัน
-                    </td>
-
-
-                    {/* ราคา */}
-
-                    <td>
-                      ฿{booking.total.toLocaleString()}
-                    </td>
-
-
-                    {/* สถานะ */}
-
-                    <td>
-
                       <span
                         className={`status ${
-                          booking.status === "ยืนยันแล้ว"
+                          booking.status === "ยืนยันแล้ว" ||
+                          booking.status === "คืนรถแล้ว"
                             ? "status-success"
                             : booking.status === "ยกเลิก"
                               ? "status-danger"
@@ -262,27 +156,12 @@ export default async function AdminBookingsPage({
                       >
                         {booking.status}
                       </span>
-
                     </td>
 
-
-                    {/* =========================
-                        ปุ่มจัดการ
-                    ========================= */}
-
                     <td>
-
                       <div className="booking-actions">
-
-                        {/* =========================
-                            รอยืนยัน
-                        ========================= */}
-
                         {booking.status === "รอยืนยัน" && (
                           <>
-
-                            {/* ยืนยัน */}
-
                             <form
                               action={updateBookingStatusAction.bind(
                                 null,
@@ -290,18 +169,13 @@ export default async function AdminBookingsPage({
                                 "ยืนยันแล้ว"
                               )}
                             >
-
                               <button
                                 type="submit"
                                 className="confirm-button"
                               >
                                 ยืนยัน
                               </button>
-
                             </form>
-
-
-                            {/* ยกเลิก */}
 
                             <form
                               action={updateBookingStatusAction.bind(
@@ -310,63 +184,40 @@ export default async function AdminBookingsPage({
                                 "ยกเลิก"
                               )}
                             >
-
                               <button
                                 type="submit"
                                 className="cancel-button"
                               >
                                 ยกเลิก
                               </button>
-
                             </form>
-
                           </>
                         )}
 
-
-                        {/* =========================
-                            ยืนยันแล้ว
-                        ========================= */}
-
                         {booking.status === "ยืนยันแล้ว" && (
-
-                          <span className="muted">
-                            ยืนยันแล้ว
-                          </span>
-
+                          <ReturnCarButton bookingId={booking.id} />
                         )}
-
-
-                        {/* =========================
-                            ยกเลิกแล้ว
-                        ========================= */}
 
                         {booking.status === "ยกเลิก" && (
-
                           <span className="muted">
                             ยกเลิกแล้ว
                           </span>
-
                         )}
 
+                        {booking.status === "คืนรถแล้ว" && (
+                          <span className="muted">
+                            คืนรถแล้ว
+                          </span>
+                        )}
                       </div>
-
                     </td>
-
                   </tr>
-
                 ))}
-
               </tbody>
-
             </table>
-
           </div>
-
         )}
-
       </div>
-
     </main>
   );
 }

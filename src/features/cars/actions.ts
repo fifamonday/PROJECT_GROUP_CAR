@@ -1,3 +1,4 @@
+
 "use server";
 
 import { getCurrentUser } from "@/features/auth/service";
@@ -5,6 +6,7 @@ import { CarDraftSchema } from "@/features/cars/schema";
 import {
   createCar,
   deleteCar,
+  setCarAvailability,
   updateCar,
 } from "@/features/cars/service";
 import { revalidatePath } from "next/cache";
@@ -45,8 +47,10 @@ export async function createCarAction(formData: FormData) {
   }
 
   await createCar(result.data);
+
   revalidatePath("/");
   revalidatePath("/admin/cars");
+
   redirect("/admin/cars");
 }
 
@@ -65,8 +69,10 @@ export async function updateCarAction(
   }
 
   await updateCar(id, result.data);
+
   revalidatePath("/");
   revalidatePath("/admin/cars");
+
   redirect("/admin/cars");
 }
 
@@ -74,7 +80,27 @@ export async function deleteCarAction(id: number) {
   await requireAdmin();
 
   await deleteCar(id);
+
   revalidatePath("/");
   revalidatePath("/admin/cars");
+
+  redirect("/admin/cars");
+}
+
+/* เปิดรถกลับมารับจองใหม่ */
+export async function openCarForBookingAction(id: number) {
+  await requireAdmin();
+
+  if (!Number.isInteger(id) || id <= 0) {
+    throw new Error("รหัสรถไม่ถูกต้อง");
+  }
+
+  await setCarAvailability(id, true);
+
+  revalidatePath("/");
+  revalidatePath("/admin/cars");
+  revalidatePath("/admin/bookings");
+  revalidatePath("/account");
+
   redirect("/admin/cars");
 }

@@ -45,6 +45,10 @@ export default function BookingForm({ car }: { car: Car }) {
   );
 
   const [error, setError] = useState("");
+  const [showErrorPopup, setShowErrorPopup] = useState(!car.available);
+  const [errorMessage, setErrorMessage] = useState(
+    car.available ? "" : "รถยังไม่เปิดเช่า"
+  );
 
   const year = calendarMonth.getFullYear();
   const month = calendarMonth.getMonth();
@@ -143,7 +147,19 @@ export default function BookingForm({ car }: { car: Car }) {
 
   return (
     <form
-      action={createBookingAction}
+      action={async (formData: FormData) => {
+        try {
+          const result = await createBookingAction(formData);
+          if (result && result.success === false) {
+            setErrorMessage(result.message);
+            setShowErrorPopup(true);
+          }
+        } catch (actionError) {
+          console.error("Booking form error:", actionError);
+          setErrorMessage("ไม่สามารถทำรายการเช่าได้ กรุณาลองใหม่อีกครั้ง");
+          setShowErrorPopup(true);
+        }
+      }}
       onSubmit={handleSubmit}
       className="booking-form"
     >
@@ -349,9 +365,38 @@ export default function BookingForm({ car }: { car: Car }) {
       <button
         type="submit"
         className="primary-button"
+        disabled={!car.available}
       >
-        ยืนยันการเช่ารถ
+        {car.available ? "ยืนยันการเช่ารถ" : "รถยังไม่เปิดเช่า"}
       </button>
+
+      {showErrorPopup && (
+        <div
+          className="car-unavailable-overlay"
+          onClick={() => setShowErrorPopup(false)}
+        >
+          <div
+            className="car-unavailable-popup"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="booking-form-error-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="car-unavailable-icon" aria-hidden="true">!</div>
+            <h2 id="booking-form-error-title">
+              {errorMessage === "รถยังไม่เปิดเช่า" ? "รถยังไม่เปิดเช่า" : "ทำรายการไม่สำเร็จ"}
+            </h2>
+            <p>{errorMessage}</p>
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() => setShowErrorPopup(false)}
+            >
+              ตกลง
+            </button>
+          </div>
+        </div>
+      )}
     </form>
   );
 }

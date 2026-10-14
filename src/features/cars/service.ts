@@ -6,14 +6,18 @@ import path from "path";
 import {
   CarSchema,
   CarDraftSchema,
+  CAR_TYPES,
+  defaultSearch,
   SearchCarSchema,
-} from "./schema";
+} from "@/features/cars/schema";
 
 import type {
   Car,
   CarDraft,
   SearchCar,
-} from "./schema";
+} from "@/features/cars/schema";
+
+export { CAR_TYPES };
 
 const filePath = path.join(
   process.cwd(),
@@ -21,187 +25,153 @@ const filePath = path.join(
   "cars.json"
 );
 
-export {
-  CarSchema,
-  CarDraftSchema,
-  SearchCarSchema,
-};
-
-export type {
-  Car,
-  CarDraft,
-  SearchCar,
-};
-
-export const CAR_TYPES = [
-  "ทั้งหมด",
-  "รถเก๋ง",
-  "SUV",
-  "กระบะ",
-  "รถตู้",
-  "มอเตอร์ไซค์",
-] as const;
-
-export const defaultSearch: SearchCar = {
-  q: "",
-  type: "ทั้งหมด",
-  maxPrice: undefined,
-};
-
-/* =========================
-   GET CARS
-========================= */
-
 export async function getCars(): Promise<Car[]> {
-  const text = await fs.readFile(
-    filePath,
-    "utf8"
-  );
+  const text = await fs.readFile(filePath, "utf8");
+  const data: unknown = JSON.parse(text);
 
-  return JSON.parse(text);
+  return CarSchema.array().parse(data);
 }
-
-/* =========================
-   GET CAR
-========================= */
 
 export async function getCar(
   id: number
 ): Promise<Car | undefined> {
   const cars = await getCars();
 
-  return cars.find(
-    (car) => car.id === id
-  );
+  return cars.find((car) => car.id === id);
 }
 
-/* =========================
-   SAVE CARS
-========================= */
-
-async function saveCars(
-  cars: Car[]
-) {
+async function saveCars(cars: Car[]): Promise<void> {
   await fs.writeFile(
     filePath,
-    JSON.stringify(
-      cars,
-      null,
-      2
-    ),
+    JSON.stringify(cars, null, 2),
     "utf8"
   );
 }
 
-/* =========================
-   CREATE CAR
-========================= */
+export async function searchCars(
+  filters: Partial<SearchCar> = {}
+): Promise<Car[]> {
+  const parsed = SearchCarSchema.safeParse({
+    ...defaultSearch,
+    ...filters,
+  });
+
+  if (!parsed.success) {
+    throw new Error("เงื่อนไขค้นหารถไม่ถูกต้อง");
+  }
+
+  const { q, type, maxPrice } = parsed.data;
+  const cars = await getCars();
+  const keyword = q.toLocaleLowerCase().trim();
+
+  return cars.filter((car) => {
+    const matchesKeyword =
+      !keyword ||
+      car.name.toLocaleLowerCase().includes(keyword) ||
+      car.brand.toLocaleLowerCase().includes(keyword) ||
+      car.licensePlate.toLocaleLowerCase().includes(keyword);
+
+    const matchesType =
+      !type ||
+      type === "ทั้งหมด" ||
+      car.type === type;
+
+    const matchesPrice =
+      maxPrice === undefined ||
+      car.pricePerDay <= maxPrice;
+
+    return (
+      matchesKeyword &&
+      matchesType &&
+      matchesPrice
+    );
+  });
+}
 
 export async function createCar(
-  draft: CarDraft
-) {
-  const cars =
-    await getCars();
+  input: CarDraft
+): Promise<Car> {
+  const draft = CarDraftSchema.parse(input);
+  const cars = await getCars();
+
+  const nextId =
+    cars.length > 0
+      ? Math.max(...cars.map((car) => car.id)) + 1
+      : 1;
 
   const car: Car = {
     ...draft,
-
-    id: Date.now(),
+    id: nextId,
   };
 
   cars.push(car);
-
   await saveCars(cars);
 
   return car;
 }
 
-/* =========================
-   UPDATE CAR
-========================= */
-
 export async function updateCar(
   id: number,
-  draft: CarDraft
-) {
-  const cars =
-    await getCars();
+  input: CarDraft
+): Promise<Car> {
+  const draft = CarDraftSchema.parse(input);
+  const cars = await getCars();
 
-  const index =
-    cars.findIndex(
-      (car) => car.id === id
-    );
+  const index = cars.findIndex(
+    (car) => car.id === id
+  );
 
-  if (index < 0) {
-    throw new Error(
-      "ไม่พบรถ"
-    );
+  if (index === -1) {
+    throw new Error("ไม่พบรถที่ต้องการแก้ไข");
   }
 
-  cars[index] = {
+  const updatedCar: Car = {
     ...draft,
     id,
   };
 
+  cars[index] = updatedCar;
+
   await saveCars(cars);
 
-  return cars[index];
+  return updatedCar;
 }
-
-/* =========================
-   DELETE CAR
-========================= */
 
 export async function deleteCar(
   id: number
-) {
-  const cars =
-    await getCars();
+): Promise<void> {
+  const cars = await getCars();
 
-  const filtered =
-    cars.filter(
-      (car) => car.id !== id
-    );
+  const index = cars.findIndex(
+    (car) => car.id === id
+  );
 
-  await saveCars(filtered);
+  if (index === -1) {
+    throw new Error("ไม่พบรถที่ต้องการลบ");
+  }
+
+  cars.splice(index, 1);
+
+  await saveCars(cars);
 }
 
-/* =========================
-   SEARCH CARS
-========================= */
+export async function setCarAvailability(
+  id: number,
+  available: boolean
+): Promise<Car> {
+  const cars = await getCars();
 
-export async function searchCars(
-  query: SearchCar
-) {
-  const cars =
-    await getCars();
+  const car = cars.find(
+    (item) => item.id === id
+  );
 
-  return cars
-    .filter((car) => {
-      const keyword =
-        query.q
-          .toLowerCase();
+  if (!car) {
+    throw new Error("ไม่พบรถที่ต้องการเปลี่ยนสถานะ");
+  }
 
-      return (
-        car.name
-          .toLowerCase()
-          .includes(keyword) ||
-        car.brand
-          .toLowerCase()
-          .includes(keyword)
-      );
-    })
-    .filter(
-      (car) =>
-        query.type ===
-          "ทั้งหมด" ||
-        car.type ===
-          query.type
-    )
-    .filter(
-      (car) =>
-        !query.maxPrice ||
-        car.pricePerDay <=
-          query.maxPrice
-    );
+  car.available = available;
+
+  await saveCars(cars);
+
+  return car;
 }
