@@ -17,14 +17,17 @@ export default async function EditCarPage({
   const user = await getCurrentUser();
 
   if (user?.role !== "admin") {
-    redirect(
-      "/login?error=เฉพาะผู้ดูแลระบบ"
-    );
+    redirect("/login?error=เฉพาะผู้ดูแลระบบ");
   }
 
   const { id } = await params;
+  const carId = Number(id);
 
-  const car = await getCar(Number(id));
+  if (!Number.isInteger(carId) || carId <= 0) {
+    notFound();
+  }
+
+  const car = await getCar(carId);
 
   if (!car) {
     notFound();
@@ -35,10 +38,7 @@ export default async function EditCarPage({
       <div className="section-title">
         <div>
           <h1>แก้ไขรถ</h1>
-
-          <p>
-            แก้ไขข้อมูลรถ {car.name}
-          </p>
+          <p>แก้ไขข้อมูลรถ {car.name}</p>
         </div>
 
         <Link

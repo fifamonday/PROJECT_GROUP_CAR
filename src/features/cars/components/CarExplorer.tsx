@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 import CarSearchForm from "./CarSearchForm";
-
 import BookingModal from "@/features/bookings/components/BookingModal";
 
 import type {
@@ -18,20 +18,50 @@ type CarExplorerProps = {
 export default function CarExplorer({
   initialCars,
 }: CarExplorerProps) {
-  const [cars] =
-    useState(initialCars);
+  const router = useRouter();
+  const [isRefreshing, startTransition] = useTransition();
 
-  const [query, setQuery] =
-    useState<SearchCar>({
-      q: "",
-      type: "ทั้งหมด",
-      maxPrice: undefined,
-    });
+  const [cars, setCars] = useState(initialCars);
 
-  const [selectedCar, setSelectedCar] =
-    useState<Car | null>(null);
+  const [query, setQuery] = useState<SearchCar>({
+    q: "",
+    type: "ทั้งหมด",
+    maxPrice: undefined,
+  });
+
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [showUnavailablePopup, setShowUnavailablePopup] = useState(false);
+
+  // อัปเดตข้อมูลรถเมื่อเซิร์ฟเวอร์ส่งข้อมูลชุดใหม่มา
+  useEffect(() => {
+    setCars(initialCars);
+  }, [initialCars]);
+
+  // รีเฟรชสถานะรถเมื่อผู้ใช้กลับมาเปิดหน้าเว็บอีกครั้ง
+  useEffect(() => {
+    const refreshCars = () => {
+      startTransition(() => {
+        router.refresh();
+      });
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        refreshCars();
+      }
+    };
+
+    window.addEventListener("focus", refreshCars);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("focus", refreshCars);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [router]);
 
   const availableCars = cars.filter((car) => car.available);
+
   const availableTypes = new Set(
     availableCars.map((car) => car.type)
   ).size;
@@ -39,22 +69,14 @@ export default function CarExplorer({
   const filtered = useMemo(() => {
     return cars
       .filter((car) => {
-        const keyword =
-          query.q
-            .toLowerCase()
-            .trim();
+        const keyword = query.q.toLowerCase().trim();
 
-        if (!keyword) {
-          return true;
-        }
+        if (!keyword) return true;
 
         return (
-          car.name
-            .toLowerCase()
-            .includes(keyword) ||
-          car.brand
-            .toLowerCase()
-            .includes(keyword)
+          car.name.toLowerCase().includes(keyword) ||
+          car.brand.toLowerCase().includes(keyword) ||
+          car.licensePlate.toLowerCase().includes(keyword)
         );
       })
       .filter((car) => {
@@ -65,9 +87,8 @@ export default function CarExplorer({
       })
       .filter((car) => {
         return (
-          !query.maxPrice ||
-          car.pricePerDay <=
-            query.maxPrice
+          query.maxPrice === undefined ||
+          car.pricePerDay <= query.maxPrice
         );
       });
   }, [cars, query]);
@@ -116,9 +137,6 @@ export default function CarExplorer({
   return (
     <>
       <main className="container">
-
-        {/* HERO */}
-
         <section className="hero">
           <div className="hero-copy">
             <span className="eyebrow">
@@ -144,7 +162,6 @@ export default function CarExplorer({
                 ค้นหาตามงบประมาณ
               </a>
             </div>
-
           </div>
 
           <div className="hero-availability">
@@ -152,8 +169,12 @@ export default function CarExplorer({
               <span className="availability-indicator" />
               <span>รถพร้อมให้เช่าตอนนี้</span>
             </div>
-            <strong className="availability-count">{availableCars.length}</strong>
-            <span className="availability-caption">คันพร้อมออกเดินทาง</span>
+            <strong className="availability-count">
+              {availableCars.length}
+            </strong>
+            <span className="availability-caption">
+              คันพร้อมออกเดินทาง
+            </span>
             <div className="availability-divider" />
             <div className="availability-meta">
               <div>
@@ -167,8 +188,6 @@ export default function CarExplorer({
             </div>
           </div>
         </section>
-
-        {/* SEARCH */}
 
         <section className="panel search-panel" id="search-cars">
           <div className="search-panel-heading">
@@ -184,21 +203,12 @@ export default function CarExplorer({
           />
         </section>
 
-        {/* TITLE */}
-
         <div className="section-title" id="available-cars">
           <div>
-            <h2>
-              รถทั้งหมด
-            </h2>
-
-            <p>
-              พบ {filtered.length} คัน
-            </p>
+            <h2>รถทั้งหมด</h2>
+            <p>พบ {filtered.length} คัน</p>
           </div>
         </div>
-
-        {/* CAR LIST */}
 
         <div className="car-grid">
           {filtered.map((car) => (
@@ -206,73 +216,88 @@ export default function CarExplorer({
               className="car-card reveal-on-scroll"
               key={car.id}
             >
-              <img
-                src={car.image}
-                alt={car.name}
-              />
+              <img src={car.image} alt={car.name} />
 
               <div className="car-body">
-
-                <span className="tag">
-                  {car.type}
-                </span>
-
-                <h3>
-                  {car.name}
-                </h3>
+                <span className="tag">{car.type}</span>
+                <h3>{car.name}</h3>
 
                 <p className="muted">
-                  {car.brand} •{" "}
-                  {car.seats} ที่นั่ง •{" "}
-                  {car.transmission}
+                  {car.brand} • {car.seats} ที่นั่ง • {car.transmission}
                 </p>
 
                 <div className="car-bottom">
-
                   <strong>
-                    ฿
-                    {car.pricePerDay.toLocaleString()}
-                    <small>
-                      {" "}
-                      / วัน
-                    </small>
+                    ฿{car.pricePerDay.toLocaleString()}
+                    <small> / วัน</small>
                   </strong>
 
                   <button
                     type="button"
                     className="primary-button"
-                    onClick={() =>
-                      setSelectedCar(car)
-                    }
-                  >
-                    เช่ารถ
-                  </button>
+                    disabled={!car.available || isRefreshing}
+                    aria-disabled={!car.available || isRefreshing}
+                    onClick={() => {
+                      if (!car.available) {
+                        setShowUnavailablePopup(true);
+                        return;
+                      }
 
+                      setSelectedCar(car);
+                    }}
+                  >
+                    {car.available ? "เช่ารถ" : "รถถูกจองแล้ว"}
+                  </button>
                 </div>
               </div>
             </article>
           ))}
         </div>
 
-        {/* EMPTY */}
-
         {filtered.length === 0 && (
           <div className="empty">
             ไม่พบรถที่ตรงกับเงื่อนไข
           </div>
         )}
-
       </main>
-
-      {/* BOOKING MODAL */}
 
       {selectedCar && (
         <BookingModal
           car={selectedCar}
-          onClose={() =>
-            setSelectedCar(null)
-          }
+          onClose={() => setSelectedCar(null)}
         />
+      )}
+
+      {showUnavailablePopup && (
+        <div
+          className="booking-popup-overlay"
+          onClick={() => setShowUnavailablePopup(false)}
+        >
+          <div
+            className="booking-popup"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="unavailable-car-popup-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="booking-popup-icon" aria-hidden="true">
+              !
+            </div>
+            <h2 id="unavailable-car-popup-title">
+              รถยังไม่เปิดเช่า
+            </h2>
+            <p>
+              รถคันนี้ยังไม่เปิดให้จองในขณะนี้ กรุณาเลือกรถคันอื่น
+            </p>
+            <button
+              type="button"
+              className="booking-popup-button"
+              onClick={() => setShowUnavailablePopup(false)}
+            >
+              ตกลง
+            </button>
+          </div>
+        </div>
       )}
     </>
   );

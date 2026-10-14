@@ -1,18 +1,6 @@
 [
   {
-    "name": "Toyota Yaris ATIV",
-    "brand": "Toyota",
-    "licensePlate": "กท 9999 เชียงใหม่",
-    "type": "รถเก๋ง",
-    "pricePerDay": 1200,
-    "seats": 5,
-    "transmission": "อัตโนมัติ",
-    "fuel": "เบนซิน",
-    "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_fbkwyxfbkwyxfbkw7b1b1799ef128ba3.jpg",
-    "available": true,
-    "id": 1791383965958
-  },
-  {
+    "id": 1791383965959,
     "name": "Honda City",
     "brand": "Honda",
     "licensePlate": "กท 8888 เชียงใหม่",
@@ -22,10 +10,10 @@
     "transmission": "อัตโนมัติ",
     "fuel": "เบนซิน",
     "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_p1079ip1079ip1073f2d730276e9ddc5.jpg",
-    "available": true,
-    "id": 1791383965959
+    "available": true
   },
   {
+    "id": 1791383965960,
     "name": "Toyota Corolla Altis",
     "brand": "Toyota",
     "licensePlate": "กท 5555 เชียงใหม่",
@@ -35,10 +23,10 @@
     "transmission": "อัตโนมัติ",
     "fuel": "เบนซิน",
     "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_kg952hkg952hkg95131a9731e8f63c7a.jpg",
-    "available": true,
-    "id": 1791383965960
+    "available": true
   },
   {
+    "id": 1791383965961,
     "name": "Honda HR-V e:HEV",
     "brand": "Honda",
     "licensePlate": "กท 7777 เชียงใหม่",
@@ -48,10 +36,10 @@
     "transmission": "อัตโนมัติ",
     "fuel": "เบนซิน",
     "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_sj4py2sj4py2sj4pb19679310625465e.jpg",
-    "available": true,
-    "id": 1791383965961
+    "available": true
   },
   {
+    "id": 1791383965962,
     "name": "Toyota Corolla Cross",
     "brand": "Toyota",
     "licensePlate": "กท 1111 เชียงใหม่",
@@ -61,10 +49,10 @@
     "transmission": "อัตโนมัติ",
     "fuel": "เบนซิน",
     "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_rpdsgprpdsgprpdsf96c892aad35df5d.jpg",
-    "available": true,
-    "id": 1791383965962
+    "available": true
   },
   {
+    "id": 1791383965963,
     "name": "Toyota Hilux Revo",
     "brand": "Toyota",
     "licensePlate": "กท 6666 เชียงใหม่",
@@ -74,10 +62,10 @@
     "transmission": "อัตโนมัติ",
     "fuel": "ดีเซล",
     "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_jc8ugtjc8ugtjc8ue428a750ac4d268f.jpg",
-    "available": true,
-    "id": 1791383965963
+    "available": true
   },
   {
+    "id": 1791383965964,
     "name": "Isuzu D-Max",
     "brand": "Isuzu",
     "licensePlate": "กท 2222 เชียงใหม่",
@@ -87,10 +75,10 @@
     "transmission": "อัตโนมัติ",
     "fuel": "ดีเซล",
     "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_si1j3bsi1j3bsi1j479cf3b9a04616ff.jpg",
-    "available": true,
-    "id": 1791383965964
+    "available": true
   },
   {
+    "id": 1791383965965,
     "name": "Toyota Hiace",
     "brand": "Toyota",
     "licensePlate": "กท 3333 เชียงใหม่",
@@ -100,10 +88,10 @@
     "transmission": "อัตโนมัติ",
     "fuel": "ดีเซล",
     "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_7fu7wf7fu7wf7fu73708d43a9dce8f7c.jpg",
-    "available": true,
-    "id": 1791383965965
+    "available": true
   },
   {
+    "id": 1791383965966,
     "name": "Honda Wave 125i",
     "brand": "Honda",
     "licensePlate": "กท 4444 เชียงใหม่",
@@ -113,10 +101,10 @@
     "transmission": "อัตโนมัติ",
     "fuel": "เบนซิน",
     "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_355gcu355gcu355g02e67e4bb86b9aa3.jpg",
-    "available": true,
-    "id": 1791383965966
+    "available": true
   },
   {
+    "id": 1791383965967,
     "name": "Yamaha NMAX",
     "brand": "Yamaha",
     "licensePlate": "กท 8888 เชียงใหม่",
@@ -126,7 +114,6 @@
     "transmission": "อัตโนมัติ",
     "fuel": "เบนซิน",
     "image": "https://s.imgz.io/2026/10/07/Gemini_Generated_Image_h57wd7h57wd7h57wece56b78f84b645f.jpg",
-    "available": true,
-    "id": 1791383965967
+    "available": true
   }
 ]
