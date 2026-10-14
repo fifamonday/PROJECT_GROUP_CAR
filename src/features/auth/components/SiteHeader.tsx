@@ -125,17 +125,6 @@ export default function SiteHeader({
           {user?.role === "admin" && (
             <>
 
-              {/* จัดการรถ */}
-
-              <Link
-                href="/admin/cars"
-                className={isActive("/admin/cars") ? "active" : undefined}
-                aria-current={isActive("/admin/cars") ? "page" : undefined}
-              >
-                จัดการรถ
-              </Link>
-
-
               {/* รายการจอง */}
 
               <Link
@@ -144,6 +133,17 @@ export default function SiteHeader({
                 aria-current={isActive("/admin/bookings") ? "page" : undefined}
               >
                 รายการจอง
+              </Link>
+
+
+              {/* จัดการรถ */}
+
+              <Link
+                href="/admin/cars"
+                className={isActive("/admin/cars") ? "active" : undefined}
+                aria-current={isActive("/admin/cars") ? "page" : undefined}
+              >
+                จัดการรถ
               </Link>
 
             </>
