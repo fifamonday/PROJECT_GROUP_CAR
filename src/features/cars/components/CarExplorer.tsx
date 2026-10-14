@@ -22,7 +22,8 @@ export default function CarExplorer({
   const router = useRouter();
   const [isRefreshing, startTransition] = useTransition();
 
-  const [cars, setCars] = useState(initialCars);
+  // รถจาก server: router.refresh() จะส่งชุดใหม่มาเองเมื่อข้อมูลเปลี่ยน
+  const cars = initialCars;
 
   const [query, setQuery] = useState<SearchCar>({
     q: "",
@@ -32,11 +33,6 @@ export default function CarExplorer({
 
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
   const [showUnavailablePopup, setShowUnavailablePopup] = useState(false);
-
-  // อัปเดตข้อมูลรถเมื่อเซิร์ฟเวอร์ส่งข้อมูลชุดใหม่มา
-  useEffect(() => {
-    setCars(initialCars);
-  }, [initialCars]);
 
   // รีเฟรชสถานะรถเมื่อผู้ใช้กลับมาเปิดหน้าเว็บอีกครั้ง
   useEffect(() => {
