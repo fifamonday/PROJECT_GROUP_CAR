@@ -21,6 +21,7 @@ import { redirect } from "next/navigation";
 
 type BookingStatus = Parameters<typeof updateBookingStatus>[1];
 
+// กันคนที่ไม่ใช่ admin
 async function requireAdmin() {
   const user = await getCurrentUser();
 
@@ -31,6 +32,7 @@ async function requireAdmin() {
   return user;
 }
 
+// สั่งให้หน้าที่เกี่ยวกับการจองโหลดข้อมูลใหม่
 function revalidateBookingPages() {
   revalidatePath("/account");
   revalidatePath("/admin/bookings");
@@ -42,6 +44,7 @@ function revalidateBookingPages() {
    CREATE BOOKING
 ========================================================= */
 
+// สำคัญ: ลูกค้ากดจอง → เช็ก login, วันเวลา, รถว่าง → คิดราคา → บันทึก
 export async function createBookingAction(formData: FormData) {
   const user = await getCurrentUser();
 
@@ -85,6 +88,7 @@ export async function createBookingAction(formData: FormData) {
     };
   }
 
+  // จำนวนวัน = (เวลาคืน - เวลารับ) ÷ 1 วัน ปัดเศษขึ้น
   const days = Math.ceil(
     (end.getTime() - start.getTime()) /
       (1000 * 60 * 60 * 24)
@@ -123,6 +127,8 @@ export async function createBookingAction(formData: FormData) {
     licensePlate: car.licensePlate,
     startDate,
     endDate,
+    startTime,
+    endTime,
     days,
     total: days * car.pricePerDay,
   });
@@ -139,6 +145,7 @@ export async function createBookingAction(formData: FormData) {
    UPDATE BOOKING
 ========================================================= */
 
+// admin แก้วันคืนรถ
 export async function updateBookingAction(
   id: number,
   formData: FormData
@@ -165,6 +172,7 @@ export async function updateBookingAction(
    Returning a car must use returnCarAction.
 ========================================================= */
 
+// admin ยืนยัน/ยกเลิก (ได้เฉพาะรายการรอยืนยัน) ยืนยันแล้วปิดรถ
 export async function updateBookingStatusAction(
   id: number,
   status: BookingStatus
@@ -206,6 +214,7 @@ export async function updateBookingStatusAction(
    ADMIN RETURNS CAR
 ========================================================= */
 
+// admin คืนรถ (ได้เฉพาะยืนยันแล้ว) แล้วเปิดรถให้จองได้อีก
 export async function returnCarAction(id: number) {
   await requireAdmin();
 

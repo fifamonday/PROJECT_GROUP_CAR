@@ -1,6 +1,7 @@
 
 import { z } from "zod";
 
+// กฎตรวจข้อมูลรถด้วย Zod (ราคา > 0, ที่นั่ง 1-15, รูปต้องเป็น URL)
 export const CarSchema = z.object({
   id: z.number(),
   name: z.string().trim().min(1, "กรุณากรอกชื่อรถ"),
@@ -19,8 +20,10 @@ export const CarSchema = z.object({
   available: z.boolean(),
 });
 
+// ข้อมูลรถตอนเพิ่ม/แก้ (ไม่มี id เพราะระบบสร้างให้)
 export const CarDraftSchema = CarSchema.omit({ id: true });
 
+// เงื่อนไขค้นหา: คำค้น ประเภท ราคาสูงสุด
 export const SearchCarSchema = z.object({
   q: z.string().trim(),
   type: z.string(),

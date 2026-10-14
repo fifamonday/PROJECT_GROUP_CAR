@@ -14,6 +14,7 @@ type BookingEditPageProps = {
   }>;
 };
 
+// หน้าแก้วันคืนรถ (admin) เข้าผ่าน URL /admin/bookings/edit/<id>
 export default async function BookingEditPage({
   params,
 }: BookingEditPageProps) {

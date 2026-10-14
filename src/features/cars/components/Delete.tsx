@@ -6,6 +6,7 @@ type DeleteProps = {
   carName: string;
 };
 
+// ปุ่มยืนยันลบรถ: bind id รถไว้กับ deleteCarAction
 export default function Delete({
   carId,
   carName,

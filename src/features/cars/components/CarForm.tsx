@@ -4,11 +4,13 @@ import { useState, useTransition } from "react";
 import type { FormEvent } from "react";
 import { createCarAction } from "@/features/cars/actions";
 
+// ฟอร์มเพิ่มรถ (admin)
 export default function CarForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isPending, startTransition] = useTransition();
 
   // ส่งฟอร์มเอง เพื่อไม่ให้ข้อมูลที่กรอกหายเมื่อบันทึกไม่ผ่าน
+  // ส่งฟอร์มเอง ถ้าไม่ผ่านแสดง popup และข้อมูลที่กรอกไม่หาย
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 

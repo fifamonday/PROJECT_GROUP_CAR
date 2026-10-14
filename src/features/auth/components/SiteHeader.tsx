@@ -15,11 +15,13 @@ type SiteHeaderProps = {
   ) => void | Promise<void>;
 };
 
+// แถบเมนูบน: ชื่อผู้ใช้, Logout, เมนู admin โชว์เฉพาะ admin
 export default function SiteHeader({
   user,
   logoutAction,
 }: SiteHeaderProps) {
   const pathname = usePathname();
+  // ไฮไลต์เมนูของหน้าที่เปิดอยู่
   const isActive = (href: string) =>
     href === "/"
       ? pathname === href

@@ -1,5 +1,6 @@
 import GoogleLoginButton from "@/features/auth/components/GoogleLoginButton";
 
+// หน้า /login: มีปุ่มเข้าสู่ระบบด้วย Google
 export default function Login() {
   return (
     <main className="auth-page">

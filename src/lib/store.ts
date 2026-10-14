@@ -29,6 +29,7 @@ function redisKey(name: string) {
   return `car-rental:${name}`;
 }
 
+// อ่านข้อมูล (cars/bookings/users) จาก Redis ถ้าว่างใช้ไฟล์ JSON
 export async function readCollection(
   name: string
 ): Promise<unknown> {
@@ -46,6 +47,7 @@ export async function readCollection(
   return JSON.parse(text);
 }
 
+// เขียนข้อมูล: Redis บน Vercel หรือไฟล์ JSON ในเครื่อง
 export async function writeCollection(
   name: string,
   items: unknown

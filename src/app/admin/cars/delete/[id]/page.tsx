@@ -11,6 +11,7 @@ type DeleteCarPageProps = {
   }>;
 };
 
+// หน้ายืนยันลบรถ: เช็ก admin → หารถจาก id → แสดง Delete
 export default async function DeleteCarPage({
   params,
 }: DeleteCarPageProps) {

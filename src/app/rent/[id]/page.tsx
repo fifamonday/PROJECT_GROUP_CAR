@@ -9,6 +9,7 @@ type RentPageProps = {
   searchParams: Promise<{ error?: string }>;
 };
 
+// หน้า /rent/[id]: รายละเอียดรถ 1 คัน + ฟอร์มจอง (ไม่มีลิงก์จากหน้าอื่น)
 export default async function RentPage({
   params,
   searchParams,

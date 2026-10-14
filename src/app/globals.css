@@ -9999,3 +9999,22 @@ html {
     animation: none !important;
   }
 }
+
+/* =========================================================
+   BOOKING DATE + TIME (วันที่บรรทัดบน เวลาบรรทัดล่าง)
+========================================================= */
+
+.booking-date,
+.booking-time {
+  display: block;
+
+  white-space: nowrap;
+}
+
+.booking-time {
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}

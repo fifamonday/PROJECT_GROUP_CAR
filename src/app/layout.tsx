@@ -9,6 +9,7 @@ export const metadata = {
   description: "ระบบเช่ารถออนไลน์",
 };
 
+// โครงหลักของทุกหน้า: ดึงผู้ใช้ปัจจุบันแล้วแสดงแถบเมนูด้านบน + footer
 export default async function RootLayout({
   children,
 }: {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+// หน้า /contact: ข้อมูลติดต่อร้าน (หน้านิ่ง ไม่มีการทำงานกับข้อมูล)
 export default function ContactPage() {
   return (
     <main className="container contact-page">

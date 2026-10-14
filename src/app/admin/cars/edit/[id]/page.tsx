@@ -11,6 +11,7 @@ type EditCarPageProps = {
   }>;
 };
 
+// หน้าแก้ไขรถ: เช็ก admin → หารถจาก id → แสดงฟอร์ม Edit
 export default async function EditCarPage({
   params,
 }: EditCarPageProps) {

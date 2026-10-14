@@ -7,6 +7,7 @@ import { getBookings } from "@/features/bookings/service";
 import { updateBookingStatusAction } from "@/features/bookings/actions";
 import ReturnCarButton from "@/features/bookings/components/ReturnCarButton";
 
+// ไม่ cache หน้านี้ ให้ดึงข้อมูลการจองล่าสุดทุกครั้ง
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
@@ -16,6 +17,7 @@ type PageProps = {
   }>;
 };
 
+// หน้า /admin/bookings: ตารางการจองทั้งหมด + ปุ่มยืนยัน/ยกเลิก/คืนรถ
 export default async function AdminBookingsPage({
   searchParams,
 }: PageProps) {
@@ -30,6 +32,7 @@ export default async function AdminBookingsPage({
   const params = await searchParams;
   const keyword = (params.q ?? "").trim().toLowerCase();
 
+  // ค้นหาจากชื่อลูกค้า อีเมล ชื่อรถ หรือทะเบียน
   const filteredBookings = bookings.filter((booking) => {
     if (!keyword) {
       return true;
@@ -45,6 +48,15 @@ export default async function AdminBookingsPage({
   const pendingBookings = filteredBookings.filter(
     (booking) => booking.status === "รอยืนยัน"
   ).length;
+
+  // แปลง 2026-10-23 เป็น 23 ต.ค. 2569
+  function formatBookingDate(value: string) {
+    return new Date(`${value}T12:00:00`).toLocaleDateString("th-TH", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  }
 
   return (
     <main className="admin-bookings-page">
@@ -120,8 +132,8 @@ export default async function AdminBookingsPage({
                   <th>อีเมล</th>
                   <th>รถ</th>
                   <th>ทะเบียน</th>
-                  <th>วันที่รับ</th>
-                  <th>วันที่คืน</th>
+                  <th>วันเวลารับ</th>
+                  <th>วันเวลาคืน</th>
                   <th>จำนวนวัน</th>
                   <th>ราคา</th>
                   <th>สถานะ</th>
@@ -136,8 +148,18 @@ export default async function AdminBookingsPage({
                     <td>{booking.userEmail || "-"}</td>
                     <td>{booking.carName}</td>
                     <td>{booking.licensePlate}</td>
-                    <td>{booking.startDate}</td>
-                    <td>{booking.endDate}</td>
+                    <td>
+                      <span className="booking-date">{formatBookingDate(booking.startDate)}</span>
+                      {booking.startTime && (
+                        <small className="booking-time">{booking.startTime} น.</small>
+                      )}
+                    </td>
+                    <td>
+                      <span className="booking-date">{formatBookingDate(booking.endDate)}</span>
+                      {booking.endTime && (
+                        <small className="booking-time">{booking.endTime} น.</small>
+                      )}
+                    </td>
                     <td>{booking.days} วัน</td>
                     <td>
                       ฿{booking.total.toLocaleString("th-TH")}

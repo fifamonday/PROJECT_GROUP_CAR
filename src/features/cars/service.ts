@@ -21,12 +21,14 @@ import type {
 
 export { CAR_TYPES };
 
+// อ่านรถทั้งหมด แล้วตรวจรูปแบบด้วย CarSchema
 export async function getCars(): Promise<Car[]> {
   const data = await readCollection("cars");
 
   return CarSchema.array().parse(data);
 }
 
+// หารถ 1 คันจาก id
 export async function getCar(
   id: number
 ): Promise<Car | undefined> {
@@ -35,10 +37,12 @@ export async function getCar(
   return cars.find((car) => car.id === id);
 }
 
+// บันทึกรถทั้งหมดกลับ (Redis บน Vercel / ไฟล์ JSON ในเครื่อง)
 async function saveCars(cars: Car[]): Promise<void> {
   await writeCollection("cars", cars);
 }
 
+// กรองรถตามคำค้น (ชื่อ/ยี่ห้อ/ทะเบียน) ประเภท และราคา
 export async function searchCars(
   filters: Partial<SearchCar> = {}
 ): Promise<Car[]> {
@@ -79,6 +83,7 @@ export async function searchCars(
   });
 }
 
+// เพิ่มรถใหม่ id = id มากสุด + 1
 export async function createCar(
   input: CarDraft
 ): Promise<Car> {
@@ -101,6 +106,7 @@ export async function createCar(
   return car;
 }
 
+// แก้ข้อมูลรถตาม id
 export async function updateCar(
   id: number,
   input: CarDraft
@@ -128,6 +134,7 @@ export async function updateCar(
   return updatedCar;
 }
 
+// ลบรถตาม id
 export async function deleteCar(
   id: number
 ): Promise<void> {
@@ -146,6 +153,7 @@ export async function deleteCar(
   await saveCars(cars);
 }
 
+// เปิด/ปิดการจองรถ (ใช้ตอนยืนยันการจองและคืนรถ)
 export async function setCarAvailability(
   id: number,
   available: boolean

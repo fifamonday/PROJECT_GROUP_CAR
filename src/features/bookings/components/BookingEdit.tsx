@@ -32,6 +32,7 @@ type BookingEditProps = {
   };
 };
 
+// ฟอร์มแก้วันคืนรถ (admin) แก้ได้แค่วันคืน
 export default function BookingEdit({
   booking,
 }: BookingEditProps) {

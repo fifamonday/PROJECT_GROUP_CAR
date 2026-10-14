@@ -3,18 +3,22 @@ import { getCurrentUser } from "@/features/auth/service";
 import { getUserBookings } from "@/features/bookings/service";
 import { redirect } from "next/navigation";
 
+// หน้า /account: รายการจองของผู้ใช้ที่ login อยู่
 export default async function AccountPage() {
+  // ยังไม่ login → ส่งไปหน้า login
   const user = await getCurrentUser();
 
   if (!user) {
     redirect("/login");
   }
 
+  // ดึงเฉพาะการจองของอีเมลนี้ แล้วนับรายการที่รอยืนยัน
   const bookings = await getUserBookings(user.email);
   const pendingBookings = bookings.filter(
     (booking) => booking.status === "รอยืนยัน"
   ).length;
 
+  // แปลง 2026-10-23 เป็น 23 ต.ค. 2569 (ใส่เวลา 12:00 กันวันเลื่อนเพราะ timezone)
   function formatBookingDate(value: string) {
     return new Date(`${value}T12:00:00`).toLocaleDateString("th-TH", {
       day: "numeric",
@@ -66,8 +70,8 @@ export default async function AccountPage() {
               <thead>
                 <tr>
                   <th>รถ</th>
-                  <th>วันที่รับ</th>
-                  <th>วันที่คืน</th>
+                  <th>วันเวลารับ</th>
+                  <th>วันเวลาคืน</th>
                   <th>จำนวนวัน</th>
                   <th>รวม</th>
                   <th>สถานะ</th>
@@ -79,9 +83,19 @@ export default async function AccountPage() {
                   <tr key={booking.id}>
                     <td className="account-car-name">{booking.carName}</td>
 
-                    <td>{formatBookingDate(booking.startDate)}</td>
+                    <td>
+                      <span className="booking-date">{formatBookingDate(booking.startDate)}</span>
+                      {booking.startTime && (
+                        <small className="booking-time">{booking.startTime} น.</small>
+                      )}
+                    </td>
 
-                    <td>{formatBookingDate(booking.endDate)}</td>
+                    <td>
+                      <span className="booking-date">{formatBookingDate(booking.endDate)}</span>
+                      {booking.endTime && (
+                        <small className="booking-time">{booking.endTime} น.</small>
+                      )}
+                    </td>
 
                     <td>{booking.days} วัน</td>
 

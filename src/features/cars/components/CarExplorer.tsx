@@ -15,6 +15,7 @@ type CarExplorerProps = {
   initialCars: Car[];
 };
 
+// หน้าแรกฝั่ง browser: ค้นหา/กรองรถ และเปิด popup จอง
 export default function CarExplorer({
   initialCars,
 }: CarExplorerProps) {
@@ -66,6 +67,7 @@ export default function CarExplorer({
     availableCars.map((car) => car.type)
   ).size;
 
+  // กรองรถ 3 ชั้น: คำค้น → ประเภท → ราคาสูงสุด
   const filtered = useMemo(() => {
     return cars
       .filter((car) => {

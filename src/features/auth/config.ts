@@ -7,6 +7,7 @@ console.log(
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 
+// ตั้งค่า Login ด้วย Google (NextAuth)
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
 
@@ -18,6 +19,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
 
   callbacks: {
+    // ตอน login: อีเมลตรงกับ admin → role = admin ไม่งั้นเป็น user
     async jwt({ token, profile }) {
       if (profile?.email) {
         token.role =
@@ -29,6 +31,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token;
     },
 
+    // ส่ง role จาก token ไปไว้ใน session ให้หน้าเว็บใช้
     async session({ session, token }) {
       return {
         ...session,

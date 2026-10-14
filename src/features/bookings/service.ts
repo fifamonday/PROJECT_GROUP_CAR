@@ -12,6 +12,7 @@ import {
    BOOKING SCHEMA
 ========================================================= */
 
+// กฎข้อมูลการจอง + สถานะ 4 แบบ
 export const BookingSchema = z.object({
   id: z.number(),
 
@@ -31,6 +32,11 @@ export const BookingSchema = z.object({
 
   endDate: z.string(),
 
+  // เวลารับ/คืนรถ (HH:mm) รายการเก่าที่จองก่อนเพิ่มฟิลด์นี้จะไม่มี
+  startTime: z.string().optional(),
+
+  endTime: z.string().optional(),
+
   days: z.number(),
 
   total: z.number(),
@@ -49,6 +55,7 @@ export type Booking = z.infer<typeof BookingSchema>;
    GET ALL BOOKINGS
 ========================================================= */
 
+// อ่านการจองทั้งหมด
 export async function getBookings(): Promise<Booking[]> {
   const data = await readCollection("bookings");
 
@@ -59,6 +66,7 @@ export async function getBookings(): Promise<Booking[]> {
    SAVE BOOKINGS
 ========================================================= */
 
+// บันทึกการจองทั้งหมดกลับ
 async function save(items: Booking[]) {
   await writeCollection("bookings", items);
 }
@@ -67,6 +75,7 @@ async function save(items: Booking[]) {
    CREATE BOOKING
 ========================================================= */
 
+// สร้างการจองใหม่ สถานะเริ่มต้น = รอยืนยัน
 export async function createBooking(
   data: Omit<Booking, "id" | "status">
 ) {
@@ -90,6 +99,7 @@ export async function createBooking(
    GET USER BOOKINGS
 ========================================================= */
 
+// การจองของผู้ใช้คนเดียว (เทียบอีเมล)
 export async function getUserBookings(userEmail: string) {
   const items = await getBookings();
 
@@ -104,6 +114,7 @@ export async function getUserBookings(userEmail: string) {
    GET BOOKING BY ID
 ========================================================= */
 
+// หาการจอง 1 รายการจาก id
 export async function getBooking(id: number) {
   const items = await getBookings();
 
@@ -116,6 +127,7 @@ export async function getBooking(id: number) {
    UPDATE BOOKING
 ========================================================= */
 
+// แก้วันคืนรถ แล้วคิดจำนวนวันและราคาใหม่
 export async function updateBooking(
   id: number,
   endDate: string
@@ -162,6 +174,7 @@ export async function updateBooking(
     throw new Error("ระยะเวลาเช่าไม่ถูกต้อง");
   }
 
+  // ราคาต่อวัน = ยอดเดิม ÷ จำนวนวันเดิม
   const pricePerDay = booking.total / oldDays;
 
   booking.endDate = endDate;
@@ -177,6 +190,7 @@ export async function updateBooking(
    UPDATE BOOKING STATUS
 ========================================================= */
 
+// เปลี่ยนสถานะการจอง
 export async function updateBookingStatus(
   id: number,
   status: Booking["status"]

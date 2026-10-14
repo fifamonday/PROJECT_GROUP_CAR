@@ -18,9 +18,11 @@ type AdminCarsProps = {
   }>;
 };
 
+// หน้า /admin/cars: ฟอร์มเพิ่มรถ + รายการรถทั้งหมด (เฉพาะ admin)
 export default async function AdminCars({
   searchParams,
 }: AdminCarsProps) {
+  // ไม่ใช่ admin → ส่งกลับหน้า login
   const user = await getCurrentUser();
 
   if (user?.role !== "admin") {
@@ -36,6 +38,7 @@ export default async function AdminCars({
     ? (params.type as (typeof CAR_TYPES)[number])
     : "ทั้งหมด";
 
+  // มีคำค้นหรือเลือกประเภท → searchCars ไม่งั้นดึงรถทั้งหมด
   const cars =
     q.trim() !== "" || selectedType !== "ทั้งหมด"
       ? await searchCars({

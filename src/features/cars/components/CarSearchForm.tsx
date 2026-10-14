@@ -2,6 +2,7 @@
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {SearchCarSchema,CAR_TYPES,defaultSearch,type SearchCar} from "@/features/cars/schema";
+// ฟอร์มค้นหาหน้าแรก ใช้ React Hook Form + Zod
 export default function CarSearchForm({onSearch}:{onSearch:(q:SearchCar)=>Promise<void>}){
  const {register,handleSubmit}=useForm<SearchCar>({resolver:zodResolver(SearchCarSchema),defaultValues:defaultSearch});
  return <form className="search-form" onSubmit={handleSubmit(onSearch)}>

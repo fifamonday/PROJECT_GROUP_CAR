@@ -19,6 +19,7 @@ type EditProps = {
   car: Car;
 };
 
+// ฟอร์มแก้รถ: bind id รถไว้กับ updateCarAction
 export default function Edit({ car }: EditProps) {
   return (
     <form

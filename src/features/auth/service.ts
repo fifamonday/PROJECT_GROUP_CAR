@@ -41,6 +41,7 @@ async function writeUsers(users: User[]) {
    เข้ารหัส Password
 ========================= */
 
+// เข้ารหัสรหัสผ่านด้วย SHA-256 (ใช้กับ login แบบเดิม)
 function hashPassword(password: string) {
   return crypto
     .createHash("sha256")
@@ -52,6 +53,7 @@ function hashPassword(password: string) {
    Login แบบเดิม
 ========================= */
 
+// login แบบอีเมล/รหัสผ่านเดิม (หน้าเว็บตอนนี้ไม่ได้ใช้แล้ว)
 export async function loginUser(
   email: string,
   password: string
@@ -97,6 +99,7 @@ export async function loginUser(
    สมัครสมาชิกแบบเดิม
 ========================= */
 
+// สมัครสมาชิกแบบเดิม (หน้าเว็บตอนนี้ไม่ได้ใช้แล้ว)
 export async function registerUser(
   name: string,
   email: string,
@@ -149,6 +152,7 @@ export async function logoutUser() {
    ดึง User ปัจจุบัน
 ========================= */
 
+// สำคัญ: คืนผู้ใช้ที่ login อยู่ { id, name, email, role } หรือ null ใช้ทุกหน้า
 export async function getCurrentUser() {
   const session = await auth();
 

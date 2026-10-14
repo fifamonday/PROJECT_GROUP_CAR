@@ -9,6 +9,7 @@ export default function AdminCarSearchForm() {
   const [q, setQ] = useState("");
   const [type, setType] = useState("ทั้งหมด");
 
+  // ใส่คำค้นลง URL (?q=&type=) ให้หน้า server ค้นหาให้
   function handleSearch(
     e: React.FormEvent<HTMLFormElement>
   ) {

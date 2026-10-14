@@ -22,14 +22,17 @@ function formatThaiDate(date: Date | null) {
   });
 }
 
+// จำนวนวันในเดือน ใช้วาดปฏิทิน
 function getDaysInMonth(year: number, month: number) {
   return new Date(year, month + 1, 0).getDate();
 }
 
+// วันแรกของเดือนตรงกับวันอะไร ใช้วาดปฏิทิน
 function getFirstDayOfMonth(year: number, month: number) {
   return new Date(year, month, 1).getDay();
 }
 
+// ฟอร์มจองในหน้า /rent/[id] (ปฏิทินทำเอง)
 export default function BookingForm({ car }: { car: Car }) {
   const today = new Date();
 

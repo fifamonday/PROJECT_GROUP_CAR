@@ -12,6 +12,7 @@ import {
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+// กันคนที่ไม่ใช่ admin เรียก action ของ admin
 async function requireAdmin() {
   const user = await getCurrentUser();
 
@@ -20,6 +21,7 @@ async function requireAdmin() {
   }
 }
 
+// แปลงค่าจากฟอร์มเป็นข้อมูลรถ แล้วตรวจด้วย Zod
 function parseCarDraft(formData: FormData) {
   return CarDraftSchema.safeParse({
     name: String(formData.get("name") ?? ""),
@@ -35,6 +37,7 @@ function parseCarDraft(formData: FormData) {
   });
 }
 
+// ปุ่มเพิ่มรถ: ตรวจข้อมูล → บันทึก → กลับหน้าจัดการรถ (ผิดพลาดคืนข้อความให้ popup)
 export async function createCarAction(formData: FormData) {
   await requireAdmin();
 
@@ -66,6 +69,7 @@ export async function createCarAction(formData: FormData) {
   redirect("/admin/cars");
 }
 
+// ปุ่มบันทึกการแก้ไขรถ
 export async function updateCarAction(
   id: number,
   formData: FormData
@@ -88,6 +92,7 @@ export async function updateCarAction(
   redirect("/admin/cars");
 }
 
+// ปุ่มลบรถ
 export async function deleteCarAction(id: number) {
   await requireAdmin();
 

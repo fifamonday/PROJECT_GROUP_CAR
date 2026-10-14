@@ -8,6 +8,7 @@ type ReturnCarButtonProps = {
   bookingId: number;
 };
 
+// ปุ่มคืนรถ: ถามยืนยันก่อนเรียก returnCarAction
 export default function ReturnCarButton({
   bookingId,
 }: ReturnCarButtonProps) {
