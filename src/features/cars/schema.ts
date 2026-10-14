@@ -8,7 +8,11 @@ export const CarSchema = z.object({
   licensePlate: z.string().trim().min(1, "กรุณากรอกทะเบียนรถ"),
   type: z.string().trim().min(1, "กรุณาเลือกประเภทรถ"),
   pricePerDay: z.number().positive("ราคาต้องมากกว่า 0"),
-  seats: z.number().int().min(1).max(15),
+  seats: z
+    .number()
+    .int("จำนวนที่นั่งต้องเป็นจำนวนเต็ม")
+    .min(1, "จำนวนที่นั่งต้องมีอย่างน้อย 1")
+    .max(15, "จำนวนที่นั่งต้องไม่เกิน 15"),
   transmission: z.string().min(1),
   fuel: z.string().min(1),
   image: z.string().url("URL รูปภาพไม่ถูกต้อง"),

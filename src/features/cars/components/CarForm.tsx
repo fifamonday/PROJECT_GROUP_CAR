@@ -1,9 +1,31 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import type { FormEvent } from "react";
 import { createCarAction } from "@/features/cars/actions";
 
 export default function CarForm() {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
+
+  // ส่งฟอร์มเอง เพื่อไม่ให้ข้อมูลที่กรอกหายเมื่อบันทึกไม่ผ่าน
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    startTransition(async () => {
+      const result = await createCarAction(formData);
+
+      if (result && result.success === false) {
+        setErrorMessage(result.message);
+      }
+    });
+  }
+
   return (
     <form
-      action={createCarAction}
+      onSubmit={handleSubmit}
       className="admin-form"
     >
       <div className="two-col">
@@ -93,7 +115,7 @@ export default function CarForm() {
             id="pricePerDay"
             name="pricePerDay"
             type="number"
-            min="0"
+            min="1"
             placeholder="เช่น 1500"
             required
           />
@@ -111,6 +133,7 @@ export default function CarForm() {
             name="seats"
             type="number"
             min="1"
+            max="15"
             placeholder="เช่น 5"
             required
           />
@@ -194,9 +217,36 @@ export default function CarForm() {
       <button
         type="submit"
         className="primary-button"
+        disabled={isPending}
       >
-        เพิ่มรถเข้าระบบ
+        {isPending ? "กำลังบันทึก..." : "เพิ่มรถเข้าระบบ"}
       </button>
+
+      {errorMessage && (
+        <div
+          className="car-unavailable-overlay"
+          onClick={() => setErrorMessage("")}
+        >
+          <div
+            className="car-unavailable-popup"
+            role="alertdialog"
+            aria-modal="true"
+            aria-labelledby="car-form-error-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="car-unavailable-icon" aria-hidden="true">!</div>
+            <h2 id="car-form-error-title">เพิ่มรถไม่สำเร็จ</h2>
+            <p>{errorMessage}</p>
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() => setErrorMessage("")}
+            >
+              ตกลง
+            </button>
+          </div>
+        </div>
+      )}
     </form>
   );
 }

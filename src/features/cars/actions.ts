@@ -40,13 +40,25 @@ export async function createCarAction(formData: FormData) {
 
   const result = parseCarDraft(formData);
 
+  // คืนข้อความให้ฟอร์มแสดงแจ้งเตือน แทนการ throw ซึ่งทำให้หน้าเว็บ error
   if (!result.success) {
-    throw new Error(
-      result.error.issues[0]?.message ?? "ข้อมูลรถไม่ถูกต้อง"
-    );
+    return {
+      success: false as const,
+      message:
+        result.error.issues[0]?.message ?? "ข้อมูลรถไม่ถูกต้อง",
+    };
   }
 
-  await createCar(result.data);
+  try {
+    await createCar(result.data);
+  } catch (error) {
+    console.error("Create car error:", error);
+
+    return {
+      success: false as const,
+      message: "บันทึกข้อมูลรถไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
+    };
+  }
 
   revalidatePath("/");
   revalidatePath("/admin/cars");
