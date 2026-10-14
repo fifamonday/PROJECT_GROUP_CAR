@@ -1,7 +1,9 @@
 import "server-only";
 
-import fs from "fs/promises";
-import path from "path";
+import {
+  readCollection,
+  writeCollection,
+} from "@/lib/store";
 
 import {
   CarSchema,
@@ -19,15 +21,8 @@ import type {
 
 export { CAR_TYPES };
 
-const filePath = path.join(
-  process.cwd(),
-  "data",
-  "cars.json"
-);
-
 export async function getCars(): Promise<Car[]> {
-  const text = await fs.readFile(filePath, "utf8");
-  const data: unknown = JSON.parse(text);
+  const data = await readCollection("cars");
 
   return CarSchema.array().parse(data);
 }
@@ -41,11 +36,7 @@ export async function getCar(
 }
 
 async function saveCars(cars: Car[]): Promise<void> {
-  await fs.writeFile(
-    filePath,
-    JSON.stringify(cars, null, 2),
-    "utf8"
-  );
+  await writeCollection("cars", cars);
 }
 
 export async function searchCars(

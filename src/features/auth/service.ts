@@ -3,8 +3,11 @@
 import { auth } from "@/features/auth/config";
 import { cookies } from "next/headers";
 import crypto from "crypto";
-import fs from "fs/promises";
-import path from "path";
+
+import {
+  readCollection,
+  writeCollection,
+} from "@/lib/store";
 
 type User = {
   id: number;
@@ -14,39 +17,24 @@ type User = {
   role: "admin" | "user";
 };
 
-const USERS_FILE = path.join(
-  process.cwd(),
-  "data",
-  "users.json"
-);
-
 /* =========================
-   อ่าน users.json
+   อ่าน users
 ========================= */
 
 async function readUsers(): Promise<User[]> {
   try {
-    const text = await fs.readFile(
-      USERS_FILE,
-      "utf8"
-    );
-
-    return JSON.parse(text);
+    return (await readCollection("users")) as User[];
   } catch {
     return [];
   }
 }
 
 /* =========================
-   เขียน users.json
+   เขียน users
 ========================= */
 
 async function writeUsers(users: User[]) {
-  await fs.writeFile(
-    USERS_FILE,
-    JSON.stringify(users, null, 2),
-    "utf8"
-  );
+  await writeCollection("users", users);
 }
 
 /* =========================

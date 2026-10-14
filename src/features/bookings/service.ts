@@ -1,19 +1,12 @@
 
 import "server-only";
 
-import fs from "fs/promises";
-import path from "path";
 import { z } from "zod";
 
-/* =========================================================
-   FILE PATH
-========================================================= */
-
-const filePath = path.join(
-  process.cwd(),
-  "data",
-  "bookings.json"
-);
+import {
+  readCollection,
+  writeCollection,
+} from "@/lib/store";
 
 /* =========================================================
    BOOKING SCHEMA
@@ -57,9 +50,7 @@ export type Booking = z.infer<typeof BookingSchema>;
 ========================================================= */
 
 export async function getBookings(): Promise<Booking[]> {
-  const text = await fs.readFile(filePath, "utf8");
-
-  const data = JSON.parse(text);
+  const data = await readCollection("bookings");
 
   return BookingSchema.array().parse(data);
 }
@@ -69,11 +60,7 @@ export async function getBookings(): Promise<Booking[]> {
 ========================================================= */
 
 async function save(items: Booking[]) {
-  await fs.writeFile(
-    filePath,
-    JSON.stringify(items, null, 2),
-    "utf8"
-  );
+  await writeCollection("bookings", items);
 }
 
 /* =========================================================
